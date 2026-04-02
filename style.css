@@ -119,7 +119,7 @@ body {
 
 /* === HERO === */
 .hero {
-  min-height: 100vh;
+  min-height: calc(100vh - 72px - 68px); /* 72px navbar + 68px categories */
   padding-top: 72px;
   display: grid;
   grid-template-columns: 520px 1fr 380px;
