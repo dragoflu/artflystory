@@ -1,0 +1,404 @@
+/* ============================================================
+   ABOUT.CSS — специфичные стили страницы "О нас"
+   Общие переменные и базовые стили → style.css
+   ============================================================ */
+
+/* === СТРАНИЦА === */
+.about-page {
+  padding-top: 72px; /* высота navbar */
+}
+
+/* === ЗОЛОТОЙ РАЗДЕЛИТЕЛЬ === */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 80px;
+  margin: 0;
+  height: 60px;
+  overflow: hidden;
+}
+.gold-divider::before,
+.gold-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.gold-divider-diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* === БИОСЕКЦИИ (чередующиеся) === */
+.bio-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Секция: фото слева */
+.bio-section--photo-left .bio-photo { order: 1; }
+.bio-section--photo-left .bio-text  { order: 2; }
+
+/* Секция: фото справа */
+.bio-section--photo-right .bio-photo { order: 2; }
+.bio-section--photo-right .bio-text  { order: 1; }
+
+/* Фотоколонка */
+.bio-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+}
+.bio-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: contrast(1.04) brightness(0.96);
+  transition: transform 0.6s ease;
+}
+.bio-photo:hover img {
+  transform: scale(1.03);
+}
+
+/* Золотая рамка-оверлей на фото */
+.bio-photo::after {
+  content: '';
+  position: absolute;
+  inset: 24px;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Текстовая колонка */
+.bio-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 72px;
+  background: var(--dark);
+  position: relative;
+}
+
+/* Тонкая вертикальная золотая черта у края */
+.bio-section--photo-left .bio-text::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 60px; bottom: 60px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--gold-dim), transparent);
+}
+.bio-section--photo-right .bio-text::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 60px; bottom: 60px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--gold-dim), transparent);
+}
+
+.bio-section-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.bio-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 2px;
+  line-height: 1.1;
+  margin-bottom: 32px;
+}
+
+.bio-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bio-section-body p {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--white-dim);
+  line-height: 1.8;
+}
+
+/* Цитата */
+.bio-quote {
+  border-left: 2px solid var(--gold);
+  padding: 20px 28px;
+  margin-top: 8px;
+  background: rgba(201, 168, 76, 0.04);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--white);
+  line-height: 1.85;
+}
+
+/* Мелкий список (членства и т.п.) */
+.bio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.bio-tag {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+  padding: 6px 14px;
+  text-transform: uppercase;
+}
+
+/* === СЕКЦИЯ ВЫСТАВОК === */
+.exhibitions-section {
+  padding: 100px 80px;
+  background: var(--black);
+  position: relative;
+}
+.exhibitions-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.section-header-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-header-title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 2px;
+}
+
+/* Список выставок — вертикальная лента */
+.exhibitions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.exhibition-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+  transition: background 0.2s ease;
+}
+.exhibition-item:first-child {
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+}
+.exhibition-item:hover {
+  background: rgba(201, 168, 76, 0.03);
+}
+
+.exhibition-number {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--gold-dim);
+  letter-spacing: 1px;
+  text-align: right;
+}
+
+.exhibition-name {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--white);
+  line-height: 1.4;
+}
+
+.exhibition-meta {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Первое место — особый акцент */
+.exhibition-item--prize .exhibition-name {
+  color: var(--gold-light);
+}
+.exhibition-item--prize .exhibition-number::after {
+  content: '★';
+  display: block;
+  color: var(--gold);
+  font-size: 14px;
+}
+
+/* === СЕКЦИЯ НАГРАД === */
+.awards-section {
+  padding: 100px 80px;
+  background: var(--surface);
+  position: relative;
+}
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.award-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  padding: 40px 36px;
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.award-card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateY(-4px);
+}
+/* Уголки-декор */
+.award-card::before,
+.award-card::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.award-card::before {
+  top: -1px; left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.award-card::after {
+  bottom: -1px; right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.award-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.award-icon svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+}
+
+.award-title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--white);
+  line-height: 1.6;
+}
+
+/* === АНИМАЦИИ ПОЯВЛЕНИЯ (scroll-driven через Intersection Observer JS) === */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+.fade-up-delay-4 { transition-delay: 0.4s; }
+.fade-up-delay-5 { transition-delay: 0.5s; }
+
+/* === FOOTER ТОНКИЙ === */
+.about-footer {
+  text-align: center;
+  padding: 40px 80px;
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+  background: var(--black);
+}
+.about-footer p {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(240, 236, 228, 0.3);
+}
+
+/* === АДАПТИВ === */
+@media (max-width: 900px) {
+  .bio-section {
+    grid-template-columns: 1fr;
+  }
+  .bio-section--photo-left .bio-photo,
+  .bio-section--photo-right .bio-photo { order: 1; min-height: 360px; }
+  .bio-section--photo-left .bio-text,
+  .bio-section--photo-right .bio-text  { order: 2; padding: 52px 36px; }
+
+  .bio-section--photo-left .bio-text::before,
+  .bio-section--photo-right .bio-text::after { display: none; }
+
+  .exhibitions-section,
+  .awards-section { padding: 72px 32px; }
+
+  .gold-divider { padding: 0 32px; }
+
+  .exhibition-item {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto auto;
+  }
+  .exhibition-meta {
+    grid-column: 2;
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar { padding: 0 20px; }
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 9px; letter-spacing: 2px; }
+
+  .bio-text { padding: 44px 24px; }
+  .bio-section-title { font-size: 26px; }
+
+  .exhibitions-section,
+  .awards-section { padding: 56px 20px; }
+
+  .awards-grid { grid-template-columns: 1fr; }
+}

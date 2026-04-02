@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARTFLYSTORY — Анна Флит</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Playfair Display как замена RomanticBold до получения лицензии -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- НАВИГАЦИЯ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-frame">
+        <span class="logo-inner">АФ</span>
+      </div>
+      <span class="logo-text">ARTFLYSTORY</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home" class="active">НА ГЛАВНУЮ</a></li>
+      <li><a href="about.html">О НАС</a></li>
+      <li><a href="gallery.html">ГАЛЛЕРЕЯ</a></li>
+      <li><a href="meetings.html">ВСТРЕЧИ</a></li>
+      <li><a href="contacts.html">КОНТАКТЫ</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-artwork">
+      <div class="circles-composition">
+
+        <!-- ЗОЛОТЫЕ КОЛЬЦА (только контур) -->
+        <div class="ring ring-gold" style="width:88px;height:88px;top:28px;left:340px;"></div>
+        <div class="ring ring-gold" style="width:54px;height:54px;top:10px;left:400px;"></div>
+        <div class="ring ring-gold" style="width:36px;height:36px;top:42px;left:456px;"></div>
+        <div class="ring ring-outline" style="width:62px;height:62px;top:74%;left:200px;"></div>
+
+        <!-- КРУЖКИ С РАБОТАМИ -->
+        <!-- верхний левый — крупный -->
+        <div class="art-circle" style="width:195px;height:195px;top:30px;left:30px;">
+          <img src="../assets/images/платок_120Х120_4.jpg" alt="Работа">
+        </div>
+        <!-- верхний правый — средний -->
+        <div class="art-circle" style="width:140px;height:140px;top:15px;left:200px;">
+          <img src="../assets/images/платок_120Х120_5.jpg" alt="Работа">
+        </div>
+        <!-- центральный главный — самый большой с золотой рамкой -->
+        <div class="art-circle art-circle--featured" style="width:220px;height:220px;top:160px;left:120px;">
+          <img src="../assets/images/давид.jpg" alt="Свидание с Давидом">
+        </div>
+        <!-- нижний левый — маленький -->
+        <div class="art-circle" style="width:105px;height:105px;top:430px;left:20px;">
+          <img src="../assets/images/photo_5229209063718511316_y.jpg" alt="Работа">
+        </div>
+        <!-- самый маленький внизу -->
+        <div class="art-circle" style="width:78px;height:78px;top:545px;left:38px;">
+          <img src="../assets/images/платок_дракон_1.jpg" alt="Работа">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">ИСКУСНО<br>&amp; ЭЛЕГАНТНО</h1>
+      <p class="hero-subtitle">Искусство приносит красоту и смысл в жизнь</p>
+      <div class="hero-buttons">
+        <a href="about.html" class="btn btn-gold">НАЧАТЬ</a>
+        <a href="gallery.html" class="btn btn-outline">ПЕРЕЙТИ В ГАЛЕРЕЮ</a>
+      </div>
+    </div>
+
+    <div class="hero-form">
+      <h3 class="form-title">Давайте поговорим</h3>
+      <p class="form-subtitle">Искусство приносит красоту и смысл в жизнь</p>
+      <form>
+        <div class="form-group">
+          <label>Имя</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>Сообщение</label>
+          <textarea rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-gold btn-full">ОТПРАВИТЬ</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- КАТЕГОРИИ -->
+  <section class="categories">
+    <a href="silk-panels.html" class="category-item">ШЕЛКОВЫЕ ПАННО</a>
+    <a href="fashion.html" class="category-item">ДИЗАЙНЕРСКАЯ ОДЕЖДА</a>
+    <a href="accessories.html" class="category-item">АКСЕССУАРЫ</a>
+    <a href="paintings.html" class="category-item">КАРТИНЫ</a>
+    <a href="books.html" class="category-item">КНИГИ</a>
+  </section>
+
+</body>
+</html>

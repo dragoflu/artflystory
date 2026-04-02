@@ -1,0 +1,217 @@
+.panel-page {
+  padding-top: 72px;
+  min-height: 100vh;
+}
+
+/* === ХЛЕБНЫЕ КРОШКИ === */
+.breadcrumb {
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.breadcrumb a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.breadcrumb a:hover { opacity: 0.7; }
+.breadcrumb__sep { color: rgba(255,255,255,0.2); }
+.breadcrumb__current { color: var(--white-dim); }
+
+/* === ОСНОВНОЙ LAYOUT === */
+.panel-layout {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 0;
+  min-height: 70vh;
+  padding: 0 60px 80px;
+}
+
+/* === ГЛАВНОЕ ФОТО === */
+.panel-main-image {
+  padding-right: 60px;
+}
+
+.panel-img-wrap {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: 600px;
+  border: 1px solid rgba(201,168,76,0.2);
+  overflow: hidden;
+}
+
+.panel-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.panel-img-wrap:hover img { transform: scale(1.04); }
+
+/* === ИНФОРМАЦИЯ === */
+.panel-info {
+  padding-top: 8px;
+}
+
+.panel-category {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3vw, 52px);
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-bottom: 28px;
+}
+
+.panel-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(201,168,76,0.5), transparent);
+  margin: 24px 0;
+}
+
+/* === ХАРАКТЕРИСТИКИ === */
+.panel-specs { display: flex; flex-direction: column; gap: 14px; }
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.spec-row::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  order: 2;
+}
+
+.spec-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--white-dim);
+  order: 1;
+}
+
+.spec-value {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--white);
+  order: 3;
+}
+
+.spec-price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* === ОПИСАНИЕ === */
+.panel-description {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--white-dim);
+  font-style: italic;
+}
+
+/* === МИНИАТЮРЫ === */
+.panel-thumbs {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.thumb {
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(201,168,76,0.25);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.thumb:hover, .thumb--active { border-color: var(--gold); }
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.15);
+  font-size: 20px;
+}
+
+/* === ПОХОЖИЕ РАБОТЫ === */
+.panel-related {
+  padding: 60px 60px 80px;
+  border-top: 1px solid rgba(201,168,76,0.12);
+}
+
+.related-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--white-dim);
+  margin-bottom: 32px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.related-card {
+  display: block;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.25s;
+  aspect-ratio: 1;
+}
+.related-card:hover { border-color: var(--gold); }
+
+.related-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.related-card:hover img { transform: scale(1.06); }
+
+.related-card span {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px 12px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-align: center;
+}

@@ -1,0 +1,403 @@
+/* === ПЕРЕМЕННЫЕ === */
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --surface: #1a1a1a;
+  --surface-hover: #222222;
+  --gold: #c9a84c;
+  --gold-light: #e4c97a;
+  --gold-dim: rgba(201, 168, 76, 0.3);
+  --white: #f0ece4;
+  --white-dim: rgba(240, 236, 228, 0.6);
+  --white-faint: rgba(240, 236, 228, 0.08);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* === СБРОС === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  /* Текстура фона */
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(40,35,30,0.8) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+/* === НАВИГАЦИЯ === */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 72px;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.logo-frame {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.logo-frame::before, .logo-frame::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  border: 1px solid var(--gold);
+}
+.logo-frame::before { top: -3px; left: -3px; border-right: none; border-bottom: none; }
+.logo-frame::after  { bottom: -3px; right: -3px; border-left: none; border-top: none; }
+
+.logo-inner {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--white);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--white-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--gold);
+  transition: right 0.3s ease;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--white);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  right: 0;
+}
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  padding-top: 72px;
+  display: grid;
+  grid-template-columns: 520px 1fr 380px;
+  grid-template-rows: 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Фоновый прямоугольник (серый как на референсе) */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 72px; left: 160px; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 50%, #161616 100%);
+  background-image:
+    linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 50%, #161616 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+.hero-artwork {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  /* фиксируем ширину под композицию */
+  min-width: 520px;
+  max-width: 560px;
+}
+
+.circles-composition {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 72px);
+  min-height: 640px;
+}
+
+/* === КОЛЬЦА ДЕКОРАТИВНЫЕ === */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ring-gold {
+  border: 2.5px solid var(--gold);
+}
+.ring-outline {
+  border: 1.5px solid rgba(201,168,76,0.4);
+}
+
+.ring-lg { width: 90px; height: 90px; }
+.ring-md { width: 65px; height: 65px; }
+.ring-sm { width: 48px; height: 48px; }
+.ring-xs { width: 34px; height: 34px; }
+
+/* === КРУГЛЫЕ РАМКИ С РАБОТАМИ === */
+.art-circle {
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--gold);
+  box-shadow:
+    0 0 0 6px rgba(201,168,76,0.12),
+    0 8px 32px rgba(0,0,0,0.6);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.art-circle:hover {
+  transform: scale(1.04);
+  box-shadow:
+    0 0 0 8px rgba(201,168,76,0.2),
+    0 16px 48px rgba(0,0,0,0.7);
+}
+
+.art-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Размеры кружков */
+.art-circle--xl     { width: 200px; height: 200px; border-width: 4px; }
+.art-circle--lg     { width: 170px; height: 170px; }
+.art-circle--md     { width: 130px; height: 130px; }
+.art-circle--sm     { width: 100px; height: 100px; }
+.art-circle--xs     { width: 75px;  height: 75px;  }
+
+/* Главный большой круг — золотое кольцо потолще */
+.art-circle--featured {
+  border-width: 5px;
+  box-shadow:
+    0 0 0 2px rgba(201,168,76,0.5),
+    0 0 0 10px rgba(201,168,76,0.08),
+    0 12px 40px rgba(0,0,0,0.7);
+}
+
+/* === HERO CONTENT (центр) === */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--white-dim);
+  margin-bottom: 40px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* === КНОПКИ === */
+.btn {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 3px;
+  padding: 14px 32px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 700;
+}
+.btn-gold:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201,168,76,0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(240,236,228,0.4);
+}
+.btn-outline:hover {
+  border-color: var(--white);
+  background: var(--white-faint);
+}
+
+.btn-full { width: 100%; text-align: center; }
+
+/* === ФОРМА СПРАВА === */
+.hero-form {
+  position: relative;
+  z-index: 2;
+  grid-column: 3;
+  background: rgba(20,20,20,0.7);
+  backdrop-filter: blur(8px);
+  border-left: 1px solid rgba(201,168,76,0.15);
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  margin-top: 0;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.form-subtitle {
+  font-size: 13px;
+  color: var(--white-dim);
+  font-style: italic;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--white-dim);
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(201,168,76,0.5);
+}
+
+/* === КАТЕГОРИИ === */
+.categories {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  border-top: 1px solid rgba(201,168,76,0.15);
+  background: rgba(10,10,10,0.95);
+}
+
+.category-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--white-dim);
+  text-decoration: none;
+  border-right: 1px solid rgba(201,168,76,0.12);
+  transition: all 0.25s ease;
+  text-align: center;
+}
+.category-item:last-child { border-right: none; }
+
+.category-item:hover {
+  color: var(--gold);
+  background: rgba(201,168,76,0.05);
+}
+
+/* === АНИМАЦИИ ПОЯВЛЕНИЯ === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-title    { animation: fadeUp 0.8s ease 0.2s both; }
+.hero-subtitle { animation: fadeUp 0.8s ease 0.4s both; }
+.hero-buttons  { animation: fadeUp 0.8s ease 0.6s both; }
+.hero-form     { animation: fadeUp 0.8s ease 0.3s both; }
+
+.art-circle:nth-child(1) { animation: fadeUp 1s ease 0.1s both; }
+.art-circle:nth-child(2) { animation: fadeUp 1s ease 0.2s both; }
+.art-circle:nth-child(3) { animation: fadeUp 1s ease 0.3s both; }
+.art-circle:nth-child(4) { animation: fadeUp 1s ease 0.4s both; }
+.art-circle:nth-child(5) { animation: fadeUp 1s ease 0.5s both; }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Встречи — ARTFLYSTORY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .coming-soon {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      text-align: center;
+      padding: 40px;
+    }
+    .coming-soon__label {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .coming-soon__title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 2px;
+    }
+    .coming-soon__line {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .coming-soon__text {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--white-dim);
+      font-style: italic;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-frame"><span class="logo-inner">АФ</span></div>
+      <span class="logo-text">ARTFLYSTORY</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">НА ГЛАВНУЮ</a></li>
+      <li><a href="about.html">О НАС</a></li>
+      <li><a href="gallery.html">ГАЛЛЕРЕЯ</a></li>
+      <li><a href="meetings.html" class="active">ВСТРЕЧИ</a></li>
+      <li><a href="contacts.html">КОНТАКТЫ</a></li>
+    </ul>
+  </nav>
+
+  <main class="coming-soon">
+    <span class="coming-soon__label">Скоро</span>
+    <div class="coming-soon__line"></div>
+    <h1 class="coming-soon__title">ВСТРЕЧИ</h1>
+    <div class="coming-soon__line"></div>
+    <p class="coming-soon__text">Расписание встреч, выставок и мастер-классов появится здесь совсем скоро</p>
+    <a href="index.html" class="btn btn-outline" style="margin-top:16px">← На главную</a>
+  </main>
+</body>
+</html>
