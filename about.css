@@ -69,15 +69,6 @@
   transform: scale(1.03);
 }
 
-/* Золотая рамка-оверлей на фото */
-.bio-photo::after {
-  content: '';
-  position: absolute;
-  inset: 24px;
-  border: 1px solid rgba(201, 168, 76, 0.25);
-  pointer-events: none;
-  z-index: 2;
-}
 
 /* Текстовая колонка */
 .bio-text {
