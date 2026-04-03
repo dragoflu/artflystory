@@ -12,6 +12,7 @@
   --white-faint: rgba(240, 236, 228, 0.08);
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Cormorant Garamond', Georgia, serif;
+  --radius: 8px;
 }
 
 /* === СБРОС === */
@@ -19,16 +20,12 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--black);
+  background-color: #1e1e1e;
   color: var(--white);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.7;
   min-height: 100vh;
-  /* Текстура фона */
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(40,35,30,0.8) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
 }
 
 /* === НАВИГАЦИЯ === */
@@ -61,6 +58,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  border-radius: 4px;
 }
 .logo-frame::before, .logo-frame::after {
   content: '';
@@ -119,7 +117,7 @@ body {
 
 /* === HERO === */
 .hero {
-  min-height: calc(100vh - 72px - 68px); /* 72px navbar + 68px categories */
+  height: calc(100vh - 68px); /* 68px = высота категорий */
   padding-top: 72px;
   display: grid;
   grid-template-columns: 520px 1fr 380px;
@@ -128,23 +126,36 @@ body {
   overflow: hidden;
 }
 
-/* Фоновый прямоугольник (серый как на референсе) */
+/* Фоновый прямоугольник с текстурой */
 .hero::before {
   content: '';
   position: absolute;
   top: 72px; left: 160px; right: 0; bottom: 0;
-  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 50%, #161616 100%);
-  background-image:
-    linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 50%, #161616 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-image: url("assets/images/bg-texture.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9;
   z-index: 0;
+}
+
+/* Тёмный оверлей поверх текстуры */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 72px; left: 160px; right: 0; bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(20,18,16,0.55) 0%,
+    rgba(15,13,12,0.35) 50%,
+    rgba(10,8,8,0.45) 100%
+  );
+  z-index: 1;
 }
 
 .hero-artwork {
   position: relative;
   z-index: 2;
   grid-column: 1;
-  /* фиксируем ширину под композицию */
   min-width: 520px;
   max-width: 560px;
 }
@@ -152,8 +163,7 @@ body {
 .circles-composition {
   position: relative;
   width: 100%;
-  height: calc(100vh - 72px);
-  min-height: 640px;
+  height: 100%;
 }
 
 /* === КОЛЬЦА ДЕКОРАТИВНЫЕ === */
@@ -169,11 +179,6 @@ body {
 .ring-outline {
   border: 1.5px solid rgba(201,168,76,0.4);
 }
-
-.ring-lg { width: 90px; height: 90px; }
-.ring-md { width: 65px; height: 65px; }
-.ring-sm { width: 48px; height: 48px; }
-.ring-xs { width: 34px; height: 34px; }
 
 /* === КРУГЛЫЕ РАМКИ С РАБОТАМИ === */
 .art-circle {
@@ -200,14 +205,6 @@ body {
   display: block;
 }
 
-/* Размеры кружков */
-.art-circle--xl     { width: 200px; height: 200px; border-width: 4px; }
-.art-circle--lg     { width: 170px; height: 170px; }
-.art-circle--md     { width: 130px; height: 130px; }
-.art-circle--sm     { width: 100px; height: 100px; }
-.art-circle--xs     { width: 75px;  height: 75px;  }
-
-/* Главный большой круг — золотое кольцо потолще */
 .art-circle--featured {
   border-width: 5px;
   box-shadow:
@@ -219,7 +216,7 @@ body {
 /* === HERO CONTENT (центр) === */
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   grid-column: 2;
   display: flex;
   flex-direction: column;
@@ -227,11 +224,21 @@ body {
   padding: 60px 40px;
 }
 
+/* ARTFLYSTORY над заголовком */
+.hero-brand {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(42px, 5vw, 68px);
+  font-size: clamp(52px, 5.5vw, 76px);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.0;
   color: var(--white);
   letter-spacing: 2px;
   margin-bottom: 20px;
@@ -240,7 +247,7 @@ body {
 
 .hero-subtitle {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 18px;
   color: var(--white-dim);
   margin-bottom: 40px;
   font-style: italic;
@@ -264,6 +271,7 @@ body {
   cursor: pointer;
   border: none;
   transition: all 0.25s ease;
+  border-radius: 6px;
 }
 
 .btn-gold {
@@ -292,17 +300,16 @@ body {
 /* === ФОРМА СПРАВА === */
 .hero-form {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   grid-column: 3;
-  background: rgba(20,20,20,0.7);
-  backdrop-filter: blur(8px);
+  background: rgba(12,10,10,0.75);
+  backdrop-filter: blur(12px);
   border-left: 1px solid rgba(201,168,76,0.15);
   padding: 48px 36px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-self: stretch;
-  margin-top: 0;
 }
 
 .form-title {
@@ -315,15 +322,15 @@ body {
 }
 
 .form-subtitle {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--white-dim);
   font-style: italic;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   line-height: 1.5;
 }
 
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
@@ -332,21 +339,22 @@ body {
   font-size: 11px;
   letter-spacing: 2px;
   color: var(--white-dim);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
   color: var(--white);
   padding: 10px 14px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s;
   resize: none;
+  border-radius: var(--radius);
 }
 
 .form-group input:focus,
@@ -359,8 +367,9 @@ body {
   position: relative;
   z-index: 2;
   display: flex;
+  height: 68px;
   border-top: 1px solid rgba(201,168,76,0.15);
-  background: rgba(10,10,10,0.95);
+  background: rgba(10,10,10,0.97);
 }
 
 .category-item {
@@ -368,7 +377,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 0 16px;
   font-family: var(--font-display);
   font-size: 10px;
   letter-spacing: 3px;
@@ -391,6 +400,7 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.hero-brand    { animation: fadeUp 0.8s ease 0.1s both; }
 .hero-title    { animation: fadeUp 0.8s ease 0.2s both; }
 .hero-subtitle { animation: fadeUp 0.8s ease 0.4s both; }
 .hero-buttons  { animation: fadeUp 0.8s ease 0.6s both; }
