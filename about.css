@@ -85,7 +85,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 80px 72px;
-  background: var(--dark);
+  background: rgba(10,8,8,0.6);
   position: relative;
 }
 
@@ -132,7 +132,7 @@
 
 .bio-section-body p {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 18px;
   color: var(--white-dim);
   line-height: 1.8;
 }
@@ -144,8 +144,7 @@
   margin-top: 8px;
   background: rgba(201, 168, 76, 0.04);
   font-family: var(--font-body);
-  font-style: italic;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--white);
   line-height: 1.85;
 }
@@ -170,7 +169,7 @@
 /* === СЕКЦИЯ ВЫСТАВОК === */
 .exhibitions-section {
   padding: 100px 80px;
-  background: var(--black);
+  background: rgba(5,4,4,0.65);
   position: relative;
 }
 .exhibitions-section::before {
@@ -266,7 +265,7 @@
 /* === СЕКЦИЯ НАГРАД === */
 .awards-section {
   padding: 100px 80px;
-  background: var(--surface);
+  background: rgba(15,12,10,0.6);
   position: relative;
 }
 
@@ -326,7 +325,7 @@
 
 .award-title {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 18px;
   color: var(--white);
   line-height: 1.6;
 }
