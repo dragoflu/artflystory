@@ -85,7 +85,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 80px 72px;
-  background: rgba(10,8,8,0.6);
+  background: transparent;
   position: relative;
 }
 
@@ -169,7 +169,7 @@
 /* === СЕКЦИЯ ВЫСТАВОК === */
 .exhibitions-section {
   padding: 100px 80px;
-  background: rgba(5,4,4,0.65);
+  background: transparent;
   position: relative;
 }
 .exhibitions-section::before {
@@ -265,7 +265,7 @@
 /* === СЕКЦИЯ НАГРАД === */
 .awards-section {
   padding: 100px 80px;
-  background: rgba(15,12,10,0.6);
+  background: transparent;
   position: relative;
 }
 
@@ -351,7 +351,7 @@
   text-align: center;
   padding: 40px 80px;
   border-top: 1px solid rgba(201, 168, 76, 0.12);
-  background: var(--black);
+  background: transparent;
 }
 .about-footer p {
   font-family: var(--font-display);
