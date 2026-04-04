@@ -179,9 +179,12 @@ body:not(.page-home)::after {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 670px;
+  display: flex;
+  align-items: center;
 }
 
-/* === КОЛЬЦА ДЕКОРАТИВНЫЕ === */
+
 /* === PNG-элементы композиции (рамки от мамы) === */
 .comp-img {
   position: absolute;
@@ -189,6 +192,17 @@ body:not(.page-home)::after {
   pointer-events: none;
   user-select: none;
 }
+
+.comp-img:nth-child(1) { animation: fadeUp 0.9s ease 0.05s both; }
+.comp-img:nth-child(2) { animation: fadeUp 0.9s ease 0.15s both; }
+.comp-img:nth-child(3) { animation: fadeUp 0.9s ease 0.25s both; }
+.comp-img:nth-child(4) { animation: fadeUp 0.9s ease 0.35s both; }
+.comp-img:nth-child(5) { animation: fadeUp 0.9s ease 0.45s both; }
+.comp-img:nth-child(6) { animation: fadeUp 0.9s ease 0.55s both; }
+.comp-img:nth-child(7) { animation: fadeUp 0.9s ease 0.65s both; }
+.comp-img:nth-child(8) { animation: fadeUp 0.9s ease 0.75s both; }
+.comp-img:nth-child(9) { animation: fadeUp 0.9s ease 0.85s both; }
+
 
 /* === HERO CONTENT (центр) === */
 .hero-content {
@@ -229,6 +243,7 @@ body:not(.page-home)::after {
   color: var(--white-dim);
   margin-bottom: 40px;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .hero-buttons {
