@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Конструктор — ARTFLYSTORY</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── ТУЛБАР ── */
+    #toolbar {
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    #toolbar h1 { color: #c9a84c; font-size: 13px; letter-spacing: 2px; margin-right: 4px; }
+    .btn-tool {
+      background: #2a2a2a;
+      color: #ddd;
+      border: 1px solid #444;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 1px;
+      transition: background 0.15s;
+      font-family: monospace;
+    }
+    .btn-tool:hover { background: #3a3a3a; }
+    .btn-tool.gold { background: #c9a84c; color: #111; border-color: #c9a84c; font-weight: bold; }
+    .btn-tool.gold:hover { background: #e0bb5a; }
+    #info-bar { color: #555; font-size: 11px; margin-left: auto; }
+    #info-bar span { color: #c9a84c; }
+
+    /* ── ОСНОВНОЙ МАКЕТ ── */
+    #main-area {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── РАБОЧАЯ ОБЛАСТЬ ── */
+    #workspace {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+      background: #0d0d0d;
+    }
+
+    #canvas {
+      position: relative;
+      width: 600px;
+      height: 720px;
+      background: #1a1209;
+      border: 1px solid #444;
+      flex-shrink: 0;
+      background-image: url('assets/images/bg-texture.jpg');
+      background-size: cover;
+    }
+    #canvas::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8,6,5,0.45);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── ЭЛЕМЕНТЫ НА КАНВАСЕ ── */
+    .elem {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      outline: 2px solid transparent;
+      transition: outline 0.08s;
+    }
+    .elem:hover { outline: 2px solid rgba(201,168,76,0.5); }
+    .elem.selected { outline: 2px solid #c9a84c; }
+    .elem img { width: 100%; height: 100%; display: block; pointer-events: none; }
+
+    .resize-handle {
+      position: absolute;
+      right: -5px; bottom: -5px;
+      width: 12px; height: 12px;
+      background: #c9a84c;
+      cursor: nwse-resize;
+      border-radius: 2px;
+      display: none;
+    }
+    .elem.selected .resize-handle { display: block; }
+
+    .elem-label {
+      position: absolute;
+      top: -18px; left: 0;
+      background: rgba(201,168,76,0.95);
+      color: #111;
+      font-size: 10px;
+      padding: 1px 5px;
+      white-space: nowrap;
+      display: none;
+      pointer-events: none;
+      z-index: 99;
+    }
+    .elem.selected .elem-label { display: block; }
+
+    /* ── ПРАВАЯ ПАНЕЛЬ ── */
+    #sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: #181818;
+      border-left: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-section {
+      padding: 12px 14px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .panel-title {
+      color: #c9a84c;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* ── ПАНЕЛЬ СЛОЁВ ── */
+    #layers-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 14px;
+    }
+    #layers-title {
+      color: #c9a84c;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    #layers-hint {
+      color: #444;
+      font-size: 10px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .layer-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border: 1px solid transparent;
+      margin-bottom: 3px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.1s;
+      user-select: none;
+    }
+    .layer-item:hover { background: #222; }
+    .layer-item.active { border-color: #c9a84c; background: #1e1a10; }
+    .layer-item.drag-over { border-color: #c9a84c; border-style: dashed; }
+
+    .layer-thumb {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      background: #111;
+      border: 1px solid #333;
+      flex-shrink: 0;
+    }
+    .layer-name {
+      font-size: 11px;
+      color: #aaa;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .layer-item.active .layer-name { color: #c9a84c; }
+
+    .layer-z {
+      font-size: 9px;
+      color: #444;
+      flex-shrink: 0;
+    }
+
+    /* Кнопки порядка слоёв */
+    .layer-btns {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .layer-btns button {
+      flex: 1;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #aaa;
+      padding: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: monospace;
+      transition: background 0.1s;
+    }
+    .layer-btns button:hover:not(:disabled) { background: #3a3a3a; color: #c9a84c; }
+    .layer-btns button:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── СВОЙСТВА ── */
+    .prop-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .prop-row label { color: #666; font-size: 11px; }
+    .prop-row input[type=number] {
+      width: 72px;
+      background: #222;
+      border: 1px solid #3a3a3a;
+      color: #fff;
+      padding: 4px 6px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    .prop-row input[type=number]:focus {
+      outline: none;
+      border-color: #c9a84c;
+    }
+
+    /* ── МОДАЛКА КОДА ── */
+    #code-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    #code-modal.open { display: flex; }
+    #code-box {
+      background: #1a1a1a;
+      border: 1px solid #c9a84c;
+      padding: 24px;
+      width: min(720px, 95vw);
+      max-height: 82vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    #code-box h3 { color: #c9a84c; margin-bottom: 14px; font-size: 13px; letter-spacing: 2px; }
+    #code-output {
+      background: #111;
+      color: #8de;
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      border: 1px solid #333;
+      margin-bottom: 14px;
+    }
+    #close-modal {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    #close-modal:hover { color: #aaa; }
+  </style>
+</head>
+<body>
+
+<!-- ТУЛБАР -->
+<div id="toolbar">
+  <h1>КОНСТРУКТОР</h1>
+  <button class="btn-tool" onclick="resetAll()">↺ Сброс</button>
+  <button class="btn-tool gold" onclick="showCode()">↗ Скопировать код</button>
+  <div id="info-bar">
+    <span id="info-name">—</span> &nbsp;
+    L:<span id="info-x">—</span> &nbsp;
+    T:<span id="info-y">—</span> &nbsp;
+    W:<span id="info-w">—</span>
+  </div>
+</div>
+
+<div id="main-area">
+
+  <!-- КАНВАС -->
+  <div id="workspace">
+    <div id="canvas"></div>
+  </div>
+
+  <!-- ПАНЕЛЬ -->
+  <div id="sidebar">
+
+    <!-- СВОЙСТВА -->
+    <div class="panel-section">
+      <div class="panel-title">Свойства</div>
+      <div class="prop-row">
+        <label>Left (px)</label>
+        <input type="number" id="prop-x" onchange="applyProps()" step="1">
+      </div>
+      <div class="prop-row">
+        <label>Top (px)</label>
+        <input type="number" id="prop-y" onchange="applyProps()" step="1">
+      </div>
+      <div class="prop-row">
+        <label>Width (px)</label>
+        <input type="number" id="prop-w" onchange="applyProps()" step="1" min="10">
+      </div>
+    </div>
+
+    <!-- СЛОИ -->
+    <div id="layers-wrap">
+      <div id="layers-title">СЛОИ</div>
+      <div id="layers-hint">Верх списка = поверх всех.<br>Перетащи слой или жми ↑↓.</div>
+      <div id="layer-btns-wrap" style="display:none;">
+        <div class="layer-btns">
+          <button title="На самый верх" onclick="moveLayer('top')">⤒</button>
+          <button title="Вверх" onclick="moveLayer('up')">↑</button>
+          <button title="Вниз" onclick="moveLayer('down')">↓</button>
+          <button title="На самый низ" onclick="moveLayer('bottom')">⤓</button>
+        </div>
+      </div>
+      <div id="layers-list" style="margin-top:10px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- МОДАЛКА КОДА -->
+<div id="code-modal">
+  <div id="code-box">
+    <button id="close-modal" onclick="closeCode()">✕</button>
+    <h3>КОД ДЛЯ index.html</h3>
+    <div id="code-output"></div>
+    <button class="btn-tool gold" onclick="copyCode()">Копировать в буфер</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// ДАННЫЕ (порядок = порядок в HTML = z-index: первый под всеми)
+// ═══════════════════════════════════════
+const DEFAULTS = [
+  { id: 'rings',        src: 'assets/images/frame-rings.png',        label: 'Кольца',         w: 197, x: 387, y:  70 },
+  { id: 'david',        src: 'assets/images/frame-david.png',        label: 'Давид',          w: 360, x: 150, y: 173 },
+  { id: 'textile',      src: 'assets/images/frame-textile.png',      label: 'Текстиль',       w: 215, x:  53, y:  60 },
+  { id: 'flowers1',     src: 'assets/images/frame-flowers1.png',     label: 'Цветы 1',        w: 167, x: 258, y:  61 },
+  { id: 'small-circle', src: 'assets/images/frame-small-circle.png', label: 'Кружок чёрн.',  w:  68, x:  88, y: 421 },
+  { id: 'flowers2',     src: 'assets/images/frame-flowers2.png',     label: 'Цветы 2',        w: 153, x:  61, y: 262 },
+  { id: 'face',         src: 'assets/images/frame-face.png',         label: 'Маска',          w: 141, x: 128, y: 404 },
+  { id: 'mosaic',       src: 'assets/images/frame-mosaic.png',       label: 'Мозаика',        w: 105, x:  70, y: 476 },
+  { id: 'small-ring',   src: 'assets/images/frame-small-ring.png',   label: 'Кольцо пустое', w:  65, x:  89, y: 609 },
+];
+
+// state[0] = самый нижний слой, state[last] = самый верхний
+let state = DEFAULTS.map(e => ({ ...e }));
+let selectedId = null;
+
+// drag на канвасе
+let dragging = null, resizing = null;
+let startMX, startMY, startX, startY, startW;
+
+// drag в списке слоёв
+let layerDragIdx = null;
+
+const canvas = document.getElementById('canvas');
+
+// ═══════════════════════════════════════
+// РЕНДЕР КАНВАСА
+// ═══════════════════════════════════════
+function render() {
+  canvas.innerHTML = '';
+  // Рендерим в порядке массива — последний элемент поверх
+  state.forEach((el, idx) => {
+    const div = document.createElement('div');
+    div.className = 'elem' + (el.id === selectedId ? ' selected' : '');
+    div.dataset.id = el.id;
+    div.style.cssText = `left:${el.x}px; top:${el.y}px; width:${el.w}px; z-index:${idx + 2};`;
+
+    const lbl = document.createElement('div');
+    lbl.className = 'elem-label';
+    lbl.textContent = el.label;
+    div.appendChild(lbl);
+
+    const img = document.createElement('img');
+    img.src = el.src;
+    img.alt = el.label;
+    div.appendChild(img);
+
+    const handle = document.createElement('div');
+    handle.className = 'resize-handle';
+    div.appendChild(handle);
+
+    div.addEventListener('mousedown', onElemMousedown);
+    handle.addEventListener('mousedown', onResizeMousedown);
+    canvas.appendChild(div);
+  });
+
+  renderLayers();
+  updateInfoBar();
+}
+
+// ═══════════════════════════════════════
+// ПАНЕЛЬ СЛОЁВ
+// ═══════════════════════════════════════
+function renderLayers() {
+  const list = document.getElementById('layers-list');
+  list.innerHTML = '';
+
+  // Показываем сверху вниз: верхний слой первым
+  const reversed = [...state].reverse();
+
+  reversed.forEach((el, dispIdx) => {
+    const realIdx = state.indexOf(el); // позиция в state
+    const item = document.createElement('div');
+    item.className = 'layer-item' + (el.id === selectedId ? ' active' : '');
+    item.draggable = true;
+    item.dataset.id = el.id;
+
+    // Миниатюра
+    const thumb = document.createElement('img');
+    thumb.className = 'layer-thumb';
+    thumb.src = el.src;
+    item.appendChild(thumb);
+
+    // Название
+    const name = document.createElement('div');
+    name.className = 'layer-name';
+    name.textContent = el.label;
+    item.appendChild(name);
+
+    // Номер z-index
+    const z = document.createElement('div');
+    z.className = 'layer-z';
+    z.textContent = realIdx + 1;
+    item.appendChild(z);
+
+    // Клик — выбрать
+    item.addEventListener('click', () => selectElem(el.id));
+
+    // Drag-and-drop между слоями
+    item.addEventListener('dragstart', e => {
+      layerDragIdx = realIdx;
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      item.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const targetIdx = realIdx;
+      if (layerDragIdx === null || layerDragIdx === targetIdx) return;
+      // Переставить в state
+      const [moved] = state.splice(layerDragIdx, 1);
+      state.splice(targetIdx, 0, moved);
+      layerDragIdx = null;
+      render();
+    });
+
+    list.appendChild(item);
+  });
+
+  // Показать кнопки если что-то выбрано
+  document.getElementById('layer-btns-wrap').style.display = selectedId ? 'block' : 'none';
+}
+
+// ═══════════════════════════════════════
+// УПРАВЛЕНИЕ СЛОЯМИ
+// ═══════════════════════════════════════
+function moveLayer(dir) {
+  const idx = state.findIndex(e => e.id === selectedId);
+  if (idx < 0) return;
+  if (dir === 'up' && idx < state.length - 1) {
+    [state[idx], state[idx + 1]] = [state[idx + 1], state[idx]];
+  } else if (dir === 'down' && idx > 0) {
+    [state[idx], state[idx - 1]] = [state[idx - 1], state[idx]];
+  } else if (dir === 'top') {
+    const [el] = state.splice(idx, 1);
+    state.push(el);
+  } else if (dir === 'bottom') {
+    const [el] = state.splice(idx, 1);
+    state.unshift(el);
+  }
+  render();
+}
+
+// ═══════════════════════════════════════
+// ВЫБОР
+// ═══════════════════════════════════════
+function selectElem(id) {
+  selectedId = id;
+  syncProps();
+  render();
+}
+
+function syncProps() {
+  const el = state.find(e => e.id === selectedId);
+  if (!el) {
+    document.getElementById('prop-x').value = '';
+    document.getElementById('prop-y').value = '';
+    document.getElementById('prop-w').value = '';
+    return;
+  }
+  document.getElementById('prop-x').value = el.x;
+  document.getElementById('prop-y').value = el.y;
+  document.getElementById('prop-w').value = el.w;
+}
+
+function applyProps() {
+  const el = state.find(e => e.id === selectedId);
+  if (!el) return;
+  const x = parseInt(document.getElementById('prop-x').value);
+  const y = parseInt(document.getElementById('prop-y').value);
+  const w = parseInt(document.getElementById('prop-w').value);
+  if (!isNaN(x)) el.x = x;
+  if (!isNaN(y)) el.y = y;
+  if (!isNaN(w) && w >= 10) el.w = w;
+  render();
+}
+
+function updateInfoBar() {
+  const el = state.find(e => e.id === selectedId);
+  document.getElementById('info-name').textContent = el ? el.label : '—';
+  document.getElementById('info-x').textContent = el ? el.x : '—';
+  document.getElementById('info-y').textContent = el ? el.y : '—';
+  document.getElementById('info-w').textContent = el ? el.w : '—';
+}
+
+// ═══════════════════════════════════════
+// DRAG (перемещение на канвасе)
+// ═══════════════════════════════════════
+function onElemMousedown(e) {
+  if (e.target.classList.contains('resize-handle')) return;
+  e.preventDefault();
+  const id = e.currentTarget.dataset.id;
+  selectElem(id);
+  const el = state.find(e2 => e2.id === id);
+  dragging = el;
+  startMX = e.clientX; startMY = e.clientY;
+  startX = el.x; startY = el.y;
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('mouseup', onDragUp);
+}
+function onDragMove(e) {
+  if (!dragging) return;
+  dragging.x = Math.round(startX + (e.clientX - startMX));
+  dragging.y = Math.round(startY + (e.clientY - startMY));
+  syncProps();
+  // Обновляем только DOM элемент без полного ре-рендера для плавности
+  const div = canvas.querySelector(`[data-id="${dragging.id}"]`);
+  if (div) { div.style.left = dragging.x + 'px'; div.style.top = dragging.y + 'px'; }
+  document.getElementById('info-x').textContent = dragging.x;
+  document.getElementById('info-y').textContent = dragging.y;
+}
+function onDragUp() {
+  dragging = null;
+  document.removeEventListener('mousemove', onDragMove);
+  document.removeEventListener('mouseup', onDragUp);
+  render();
+}
+
+// ═══════════════════════════════════════
+// RESIZE
+// ═══════════════════════════════════════
+function onResizeMousedown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const id = e.currentTarget.parentElement.dataset.id;
+  selectElem(id);
+  const el = state.find(e2 => e2.id === id);
+  resizing = el;
+  startMX = e.clientX;
+  startW = el.w;
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('mouseup', onResizeUp);
+}
+function onResizeMove(e) {
+  if (!resizing) return;
+  resizing.w = Math.max(10, Math.round(startW + (e.clientX - startMX)));
+  const div = canvas.querySelector(`[data-id="${resizing.id}"]`);
+  if (div) div.style.width = resizing.w + 'px';
+  document.getElementById('prop-w').value = resizing.w;
+  document.getElementById('info-w').textContent = resizing.w;
+}
+function onResizeUp() {
+  resizing = null;
+  document.removeEventListener('mousemove', onResizeMove);
+  document.removeEventListener('mouseup', onResizeUp);
+  render();
+}
+
+// Клик на пустой канвас — снять выбор
+canvas.addEventListener('mousedown', e => {
+  if (e.target === canvas) { selectedId = null; render(); }
+});
+
+// ═══════════════════════════════════════
+// СБРОС
+// ═══════════════════════════════════════
+function resetAll() {
+  state = DEFAULTS.map(e => ({ ...e }));
+  selectedId = null;
+  render();
+}
+
+// ═══════════════════════════════════════
+// КОД
+// ═══════════════════════════════════════
+function showCode() {
+  const lines = state.map(el =>
+    `<!-- ${el.label} -->\n<img class="comp-img" src="${el.src}" alt="${el.label}" style="width:${el.w}px; left:${el.x}px; top:${el.y}px;">`
+  );
+  document.getElementById('code-output').textContent = lines.join('\n\n');
+  document.getElementById('code-modal').classList.add('open');
+}
+function closeCode() {
+  document.getElementById('code-modal').classList.remove('open');
+}
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('code-output').textContent).then(() => {
+    const btn = document.querySelector('#code-box .gold');
+    btn.textContent = '✓ Скопировано!';
+    setTimeout(() => btn.textContent = 'Копировать в буфер', 2000);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCode();
+  // Стрелки для точного позиционирования
+  if (!selectedId) return;
+  const el = state.find(s => s.id === selectedId);
+  if (!el) return;
+  const step = e.shiftKey ? 10 : 1;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); el.x -= step; render(); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); el.x += step; render(); }
+  if (e.key === 'ArrowUp')    { e.preventDefault(); el.y -= step; render(); }
+  if (e.key === 'ArrowDown')  { e.preventDefault(); el.y += step; render(); }
+});
+
+render();
+</script>
+</body>
+</html>
