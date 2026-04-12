@@ -58,8 +58,10 @@
 
     <div class="hero-content">
       <span class="hero-brand">ARTFLYSTORY</span>
-      <h1 class="hero-title">ИСКУССТВО<br>&amp;<br>ЭЛЕГАНТНОСТЬ</h1>
-      <p class="hero-subtitle">Приносят красоту и смысл в жизнь</p>
+      <div class="hero-title-group">
+        <h1 class="hero-title">ИСКУССТВО<br>&amp;<br>ЭЛЕГАНТНОСТЬ</h1>
+        <p class="hero-subtitle">ПРИНОСЯТ КРАСОТУ И СМЫСЛ В ЖИЗНЬ</p>
+      </div>
       <div class="hero-buttons">
         <a href="about.html" class="btn btn-gold">НАЧАТЬ</a>
         <a href="gallery.html" class="btn btn-outline">ПЕРЕЙТИ В ГАЛЕРЕЮ</a>
@@ -68,7 +70,7 @@
 
     <div class="hero-form">
       <h3 class="form-title">Давайте поговорим</h3>
-      <p class="form-subtitle">Искусство приносит красоту и смысл в жизнь</p>
+      <p class="form-subtitle">Искусство и элегантность приносят красоту и смысл в жизнь</p>
       <form>
         <div class="form-group">
           <label>Имя</label>
@@ -89,15 +91,46 @@
 
   <!-- КАТЕГОРИИ -->
   <section class="categories">
-    <a href="silk-panels.html" class="category-item">ШЕЛКОВЫЕ ПАННО</a>
-    <a href="fashion.html" class="category-item">ДИЗАЙНЕРСКАЯ ОДЕЖДА</a>
-    <a href="accessories.html" class="category-item">АКСЕССУАРЫ</a>
-    <a href="paintings.html" class="category-item">КАРТИНЫ</a>
-    <a href="books.html" class="category-item">КНИГИ</a>
+    <a href="silk-panels.html" class="category-item">ШЕЛКОВЫЕ ДЕКОРАТИВНЫЕ ПАННО</a>
+    <a href="fashion.html" class="category-item">ДИЗАЙНЕРСКАЯ ОДЕЖДА И АКСЕССУАРЫ</a>
+    <a href="accessories.html" class="category-item">ШЕЛКОВЫЕ ПЛАТКИ</a>
+    <a href="paintings.html" class="category-item">КАРТИНЫ ДЛЯ ВАШЕГО ИНТЕРЬЕРА</a>
+    <a href="books.html" class="category-item">АВТОРСКИЕ КНИГИ</a>
   </section>
 
+<script>
+  function syncSubtitle() {
+    const titleGroup = document.querySelector('.hero-title-group');
+    const subtitle   = document.querySelector('.hero-subtitle');
+    if (!titleGroup || !subtitle) return;
 
+    // Сброс
+    subtitle.style.fontSize      = '';
+    subtitle.style.letterSpacing = '0';
 
+    // Берём реальную ширину контейнера (= ширина строки ЭЛЕГАНТНОСТЬ)
+    const targetW = titleGroup.getBoundingClientRect().width;
+    if (!targetW) return;
+
+    // Измеряем субтитр при 10px без letter-spacing
+    const scs = getComputedStyle(subtitle);
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:fixed;top:-9999px;visibility:hidden;white-space:nowrap;' +
+      'font-family:' + scs.fontFamily + ';font-size:10px;font-weight:' + scs.fontWeight + ';letter-spacing:0';
+    probe.textContent = subtitle.textContent.trim();
+    document.body.appendChild(probe);
+    const baseW = probe.getBoundingClientRect().width;
+    document.body.removeChild(probe);
+    if (!baseW) return;
+
+    subtitle.style.fontSize = (10 * targetW / baseW) + 'px';
+  }
+
+  document.fonts.ready.then(function() {
+    requestAnimationFrame(syncSubtitle);
+    window.addEventListener('resize', syncSubtitle);
+  });
+</script>
 
 </body>
 </html>

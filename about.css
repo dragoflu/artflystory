@@ -139,6 +139,7 @@
   font-size: 18px;
   color: var(--white-dim);
   line-height: 1.8;
+  text-align: justify;
 }
 
 /* Цитата */
@@ -332,6 +333,7 @@
   font-size: 18px;
   color: var(--white);
   line-height: 1.6;
+  font-variant-numeric: lining-nums;
 }
 
 /* === АНИМАЦИИ ПОЯВЛЕНИЯ (scroll-driven через Intersection Observer JS) === */

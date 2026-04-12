@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Конструктор композиции — ARTFLYSTORY</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d0d;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      color: #ccc;
+    }
+
+    /* ── ТУЛБАР ── */
+    #toolbar {
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    #toolbar h1 { color: #c9a84c; font-size: 13px; letter-spacing: 2px; }
+    .btn {
+      background: #2a2a2a;
+      color: #ddd;
+      border: 1px solid #444;
+      padding: 5px 14px;
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-family: monospace;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #3a3a3a; }
+    .btn.gold { background: #c9a84c; color: #111; border-color: #c9a84c; font-weight: bold; }
+    .btn.gold:hover { background: #e0bb5a; }
+
+    #info {
+      margin-left: auto;
+      font-size: 11px;
+      color: #666;
+    }
+    #info span { color: #c9a84c; }
+
+    /* ── РАБОЧАЯ ОБЛАСТЬ ── */
+    #workspace {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    /* Имитация всего hero-artwork (левая колонка главной) */
+    #stage {
+      position: relative;
+      width: 520px;
+      height: 700px;
+      background-image: url('assets/images/bg-texture.jpg');
+      background-size: cover;
+      border: 1px solid #333;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    #stage::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8,6,5,0.45);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Вся композиция — единый блок */
+    #composition {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      z-index: 2;
+      /* transform задаётся JS */
+    }
+    #composition.grabbing { cursor: grabbing; }
+    #composition img {
+      position: absolute;
+      height: auto;
+      pointer-events: none;
+    }
+
+    /* Рамка выбранного состояния */
+    #comp-outline {
+      position: absolute;
+      border: 2px solid #c9a84c;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Ручка resize */
+    #resize-handle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #c9a84c;
+      border-radius: 2px;
+      cursor: nwse-resize;
+      z-index: 10;
+    }
+
+    /* ── БОКОВАЯ ПАНЕЛЬ ── */
+    #sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: #181818;
+      border-left: 1px solid #2a2a2a;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .panel-title { color: #c9a84c; font-size: 10px; letter-spacing: 2px; margin-bottom: 2px; }
+
+    .prop-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .prop-row label { color: #666; font-size: 11px; }
+    .prop-row input[type=number] {
+      width: 80px;
+      background: #222;
+      border: 1px solid #3a3a3a;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    .prop-row input[type=number]:focus { outline: none; border-color: #c9a84c; }
+
+    .hint {
+      font-size: 10px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    /* ── МОДАЛКА ── */
+    #code-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    #code-modal.open { display: flex; }
+    #code-box {
+      background: #1a1a1a;
+      border: 1px solid #c9a84c;
+      padding: 24px;
+      width: min(640px, 95vw);
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    #code-box h3 { color: #c9a84c; margin-bottom: 12px; font-size: 13px; letter-spacing: 2px; }
+    #code-output {
+      background: #111;
+      color: #8de;
+      font-size: 12px;
+      line-height: 1.8;
+      padding: 14px;
+      white-space: pre;
+      border: 1px solid #333;
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+    #close-modal {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; color: #666;
+      font-size: 20px; cursor: pointer;
+    }
+    #close-modal:hover { color: #aaa; }
+
+    #main-area { display: flex; flex: 1; overflow: hidden; }
+  </style>
+</head>
+<body>
+
+<div id="toolbar">
+  <h1>КОМПОЗИЦИЯ</h1>
+  <button class="btn" onclick="reset()">↺ Сброс</button>
+  <button class="btn gold" onclick="showCode()">↗ Скопировать CSS</button>
+  <div id="info">
+    left: <span id="i-x">—</span> &nbsp;
+    top: <span id="i-y">—</span> &nbsp;
+    scale: <span id="i-s">—</span>
+  </div>
+</div>
+
+<div id="main-area">
+
+  <div id="workspace">
+    <div id="stage">
+      <div id="composition">
+        <!-- Все элементы из index.html -->
+        <img src="assets/images/frame-rings.png"        style="width:197px; left:387px; top:70px;">
+        <img src="assets/images/frame-david.png"        style="width:360px; left:150px; top:173px;">
+        <img src="assets/images/frame-textile.png"      style="width:215px; left:53px;  top:60px;">
+        <img src="assets/images/frame-flowers1.png"     style="width:167px; left:258px; top:61px;">
+        <img src="assets/images/frame-small-circle.png" style="width:68px;  left:88px;  top:421px;">
+        <img src="assets/images/frame-flowers2.png"     style="width:153px; left:61px;  top:262px;">
+        <img src="assets/images/frame-face.png"         style="width:141px; left:128px; top:404px;">
+        <img src="assets/images/frame-mosaic.png"       style="width:105px; left:70px;  top:476px;">
+        <img src="assets/images/frame-small-ring.png"   style="width:65px;  left:89px;  top:609px;">
+      </div>
+
+      <!-- Контур и ручка поверх -->
+      <div id="comp-outline"></div>
+      <div id="resize-handle"></div>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <div>
+      <div class="panel-title">ПОЗИЦИЯ</div>
+      <div class="prop-row">
+        <label>Left (px)</label>
+        <input type="number" id="p-x" onchange="applyProps()" step="1">
+      </div>
+      <div class="prop-row">
+        <label>Top (px)</label>
+        <input type="number" id="p-y" onchange="applyProps()" step="1">
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">МАСШТАБ</div>
+      <div class="prop-row">
+        <label>Scale</label>
+        <input type="number" id="p-s" onchange="applyProps()" step="0.01" min="0.1" max="3">
+      </div>
+    </div>
+
+    <div class="hint">
+      Тяни всю композицию мышью.<br>
+      Правый нижний угол — масштаб.<br>
+      Стрелки = 1px, Shift+стрелки = 10px.<br><br>
+      Итоговый CSS вставь в style.css в правило <code>.circles-composition</code>
+    </div>
+  </div>
+
+</div>
+
+<!-- МОДАЛКА -->
+<div id="code-modal">
+  <div id="code-box">
+    <button id="close-modal" onclick="closeCode()">✕</button>
+    <h3>CSS ДЛЯ .circles-composition</h3>
+    <div id="code-output"></div>
+    <button class="btn gold" onclick="copyCode()">Копировать</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════
+// СОСТОЯНИЕ
+// ══════════════════════════════════
+const DEFAULT = { x: 0, y: 0, scale: 1.08 };
+let state = { ...DEFAULT };
+
+const comp       = document.getElementById('composition');
+const outline    = document.getElementById('comp-outline');
+const resizeH    = document.getElementById('resize-handle');
+const stage      = document.getElementById('stage');
+
+// ══════════════════════════════════
+// РЕНДЕР
+// ══════════════════════════════════
+function render() {
+  comp.style.transform       = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+  comp.style.transformOrigin = 'top left';
+
+  // Обновляем контур и ручку
+  const cr = comp.getBoundingClientRect();
+  const sr = stage.getBoundingClientRect();
+  const ox = cr.left - sr.left;
+  const oy = cr.top  - sr.top;
+
+  outline.style.left   = ox + 'px';
+  outline.style.top    = oy + 'px';
+  outline.style.width  = cr.width + 'px';
+  outline.style.height = cr.height + 'px';
+
+  resizeH.style.left = (ox + cr.width - 7) + 'px';
+  resizeH.style.top  = (oy + cr.height - 7) + 'px';
+
+  // Инфо-бар и поля
+  document.getElementById('i-x').textContent = Math.round(state.x);
+  document.getElementById('i-y').textContent = Math.round(state.y);
+  document.getElementById('i-s').textContent = state.scale.toFixed(3);
+  document.getElementById('p-x').value = Math.round(state.x);
+  document.getElementById('p-y').value = Math.round(state.y);
+  document.getElementById('p-s').value = state.scale.toFixed(3);
+}
+
+function applyProps() {
+  const x = parseFloat(document.getElementById('p-x').value);
+  const y = parseFloat(document.getElementById('p-y').value);
+  const s = parseFloat(document.getElementById('p-s').value);
+  if (!isNaN(x)) state.x = x;
+  if (!isNaN(y)) state.y = y;
+  if (!isNaN(s) && s > 0) state.scale = s;
+  render();
+}
+
+// ══════════════════════════════════
+// DRAG (позиция)
+// ══════════════════════════════════
+let dragging = false, startMX, startMY, startX, startY;
+
+comp.addEventListener('mousedown', e => {
+  if (e.target === resizeH) return;
+  e.preventDefault();
+  dragging = true;
+  startMX = e.clientX; startMY = e.clientY;
+  startX  = state.x;   startY  = state.y;
+  comp.classList.add('grabbing');
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup',   onDragUp);
+});
+function onDrag(e) {
+  if (!dragging) return;
+  state.x = Math.round(startX + (e.clientX - startMX));
+  state.y = Math.round(startY + (e.clientY - startMY));
+  render();
+}
+function onDragUp() {
+  dragging = false;
+  comp.classList.remove('grabbing');
+  document.removeEventListener('mousemove', onDrag);
+  document.removeEventListener('mouseup',   onDragUp);
+}
+
+// ══════════════════════════════════
+// RESIZE (масштаб через ручку)
+// ══════════════════════════════════
+let resizing = false, startScale, startRMX;
+// Базовая ширина композиции (без scale)
+const BASE_W = 590; // px (правый край rings: 387+197=584 + немного)
+
+resizeH.addEventListener('mousedown', e => {
+  e.preventDefault();
+  e.stopPropagation();
+  resizing   = true;
+  startRMX   = e.clientX;
+  startScale = state.scale;
+  document.addEventListener('mousemove', onResize);
+  document.addEventListener('mouseup',   onResizeUp);
+});
+function onResize(e) {
+  if (!resizing) return;
+  const delta = (e.clientX - startRMX) / BASE_W;
+  state.scale = Math.max(0.1, Math.round((startScale + delta) * 1000) / 1000);
+  render();
+}
+function onResizeUp() {
+  resizing = false;
+  document.removeEventListener('mousemove', onResize);
+  document.removeEventListener('mouseup',   onResizeUp);
+}
+
+// ══════════════════════════════════
+// СТРЕЛКИ
+// ══════════════════════════════════
+document.addEventListener('keydown', e => {
+  const step = e.shiftKey ? 10 : 1;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); state.x -= step; render(); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); state.x += step; render(); }
+  if (e.key === 'ArrowUp')    { e.preventDefault(); state.y -= step; render(); }
+  if (e.key === 'ArrowDown')  { e.preventDefault(); state.y += step; render(); }
+  if (e.key === '+' || e.key === '=') { state.scale = +(state.scale + 0.01).toFixed(3); render(); }
+  if (e.key === '-')           { state.scale = Math.max(0.1, +(state.scale - 0.01).toFixed(3)); render(); }
+  if (e.key === 'Escape')      closeCode();
+});
+
+// ══════════════════════════════════
+// СБРОС
+// ══════════════════════════════════
+function reset() {
+  state = { ...DEFAULT };
+  render();
+}
+
+// ══════════════════════════════════
+// КОД
+// ══════════════════════════════════
+function showCode() {
+  document.getElementById('code-output').textContent =
+`.circles-composition {
+  transform: scale(${state.scale}) translate(${state.x}px, ${state.y}px);
+  transform-origin: top left;
+}`;
+  document.getElementById('code-modal').classList.add('open');
+}
+function closeCode() {
+  document.getElementById('code-modal').classList.remove('open');
+}
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('code-output').textContent).then(() => {
+    const btn = document.querySelector('#code-box .gold');
+    btn.textContent = '✓ Скопировано!';
+    setTimeout(() => btn.textContent = 'Копировать', 2000);
+  });
+}
+
+// Старт
+render();
+</script>
+</body>
+</html>
