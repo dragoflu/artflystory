@@ -152,6 +152,7 @@
   font-size: 17px;
   color: var(--white);
   line-height: 1.85;
+  text-align: justify;
 }
 
 /* Мелкий список (членства и т.п.) */
