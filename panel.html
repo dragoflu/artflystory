@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Панно — ARTFLYSTORY</title>
+  <title>Анна Павлова — ARTFLYSTORY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <ul class="nav-links">
       <li><a href="index.html">НА ГЛАВНУЮ</a></li>
       <li><a href="about.html">О НАС</a></li>
-      <li><a href="gallery.html" class="active">ГАЛЛЕРЕЯ</a></li>
+      <li><a href="gallery.html">ГАЛЛЕРЕЯ</a></li>
       <li><a href="meetings.html">ВСТРЕЧИ</a></li>
       <li><a href="contacts.html">КОНТАКТЫ</a></li>
     </ul>
@@ -31,43 +31,88 @@
     <nav class="breadcrumb">
       <a href="silk-panels.html">← Шелковые панно</a>
       <span class="breadcrumb__sep">/</span>
-      <span class="breadcrumb__current" id="panel-collection">Алая сцена</span>
+      <span class="breadcrumb__current">Алая лента</span>
     </nav>
 
     <div class="panel-layout">
 
-      <!-- ЛЕВАЯ: главное фото -->
+      <!-- ЛЕВАЯ: главное фото + интерьеры -->
       <div class="panel-main-image">
         <div class="panel-img-wrap">
-          <img loading="lazy" id="panel-main-img" src="assets/images/платок_91Х91_.jpg" alt="Панно">
+          <img loading="lazy" id="panel-main-img" src="assets/images/платок_91Х91_.jpg" alt="Анна Павлова">
+        </div>
+
+        <!-- 4 интерьерных фото -->
+        <div class="panel-interiors">
+          <p class="interiors-label">Панно в интерьере</p>
+          <div class="interiors-grid">
+            <div class="interior-thumb" data-src="assets/images/anna-pavlova-int-1.jpg">
+              <img loading="lazy" src="assets/images/anna-pavlova-int-1.jpg" alt="Интерьер 1">
+            </div>
+            <div class="interior-thumb" data-src="assets/images/anna-pavlova-int-2.jpg">
+              <img loading="lazy" src="assets/images/anna-pavlova-int-2.jpg" alt="Интерьер 2">
+            </div>
+            <div class="interior-thumb" data-src="assets/images/anna-pavlova-int-3.jpg">
+              <img loading="lazy" src="assets/images/anna-pavlova-int-3.jpg" alt="Интерьер 3">
+            </div>
+            <div class="interior-thumb" data-src="assets/images/anna-pavlova-int-4.jpg">
+              <img loading="lazy" src="assets/images/anna-pavlova-int-4.jpg" alt="Интерьер 4">
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- ПРАВАЯ: информация -->
       <div class="panel-info">
-        <span class="panel-category" id="panel-cat">Шелковые панно</span>
-        <h1 class="panel-title" id="panel-title">Анна Павлова</h1>
+        <span class="panel-category">Шелковые панно · Коллекция «Алая лента»</span>
+        <h1 class="panel-title">Анна Павлова</h1>
 
         <div class="panel-divider"></div>
 
         <div class="panel-specs">
           <div class="spec-row">
-            <span class="spec-label">Размер</span>
-            <span class="spec-value" id="panel-size">100 × 100 см</span>
-          </div>
-          <div class="spec-row">
             <span class="spec-label">Материал</span>
-            <span class="spec-value" id="panel-material">Шёлк на холсте</span>
+            <span class="spec-value">Шёлк на холсте</span>
           </div>
           <div class="spec-row">
-            <span class="spec-label">Цена</span>
-            <span class="spec-value spec-price" id="panel-price">45 000 ₽</span>
+            <span class="spec-label">Техника</span>
+            <span class="spec-value">Авторская коллаборация</span>
           </div>
         </div>
 
         <div class="panel-divider"></div>
 
-        <p class="panel-description" id="panel-desc">
+        <!-- ТАБЛИЦА РАЗМЕРОВ И ЦЕН -->
+        <div class="panel-sizes">
+          <p class="sizes-title">Размеры и стоимость</p>
+          <table class="sizes-table">
+            <thead>
+              <tr>
+                <th>Размер</th>
+                <th>Цена</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>60 × 60 см</td>
+                <td class="price-cell">— ₽</td>
+              </tr>
+              <tr>
+                <td>90 × 90 см</td>
+                <td class="price-cell">— ₽</td>
+              </tr>
+              <tr>
+                <td>120 × 120 см</td>
+                <td class="price-cell">— ₽</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="sizes-note">Возможно изготовление по индивидуальным размерам</p>
+        </div>
+
+        <div class="panel-divider"></div>
+
+        <p class="panel-description">
           Уникальная авторская работа. Создана с использованием техники коллаборации — соединение существующего полотна, вышивки и ярких материалов.
         </p>
 
@@ -75,23 +120,11 @@
           СВЯЗАТЬСЯ ДЛЯ ПОКУПКИ
         </a>
 
-        <!-- Доп. фото -->
-        <div class="panel-thumbs" id="panel-thumbs">
-          <div class="thumb thumb--active">
-            <img loading="lazy" src="assets/images/платок_91Х91_.jpg" alt="">
-          </div>
-          <div class="thumb thumb--placeholder">
-            <span>+</span>
-          </div>
-          <div class="thumb thumb--placeholder">
-            <span>+</span>
-          </div>
-        </div>
       </div>
 
     </div>
 
-    <!-- Похожие работы -->
+    <!-- Другие работы из коллекции -->
     <section class="panel-related">
       <h2 class="related-title">Другие работы из коллекции</h2>
       <div class="related-grid">
@@ -108,12 +141,25 @@
           <span>Красный конь</span>
         </a>
         <a href="#" class="related-card">
-          <img loading="lazy" src="assets/images/платок_120Х120_9.jpg" alt="метро...">
+          <img loading="lazy" src="assets/images/платок_120Х120_9.jpg" alt="метро...</span>
           <span>метро...</span>
         </a>
       </div>
     </section>
 
   </main>
+
+  <script>
+    // Клик по интерьерной миниатюре — меняем главное фото
+    document.querySelectorAll('.interior-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const src = thumb.dataset.src;
+        document.getElementById('panel-main-img').src = src;
+        document.querySelectorAll('.interior-thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+      });
+    });
+  </script>
+
 </body>
 </html>
