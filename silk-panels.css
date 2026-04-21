@@ -124,6 +124,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 /* Описание коллекции */
@@ -133,9 +134,9 @@
 
 .collection-desc p {
   font-family: var(--font-body);
-  font-size: 19px;
-  line-height: 1.9;
-  color: var(--white);
+  font-size: 18px;
+  line-height: 1.87;
+  color: var(--white-dim);
   text-align: justify;
   margin-bottom: 14px;
 }
@@ -149,6 +150,11 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+}
+
+/* Ряд из 3 картин */
+.small-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 /* === КАРТОЧКА === */

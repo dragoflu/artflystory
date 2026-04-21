@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Анна Павлова — ARTFLYSTORY</title>
+  <title>Свидание с Давидом — ARTFLYSTORY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
     <nav class="breadcrumb">
       <a href="silk-panels.html">← Шелковые панно</a>
       <span class="breadcrumb__sep">/</span>
-      <span class="breadcrumb__current">Алая лента</span>
+      <span class="breadcrumb__current">Музейная коллекция</span>
     </nav>
 
     <div class="panel-layout">
@@ -39,27 +39,27 @@
       <!-- ЛЕВАЯ: главное фото + интерьеры -->
       <div class="panel-main-image">
         <div class="panel-img-wrap">
-          <img loading="lazy" id="panel-main-img" src="assets/images/платок_91Х91_.jpg" alt="Анна Павлова">
+          <img loading="lazy" id="panel-main-img" src="assets/images/давид.jpg" alt="Свидание с Давидом">
         </div>
 
-        <!-- 4 интерьерных фото -->
+        <!-- Миниатюры: само панно + интерьеры -->
         <div class="panel-interiors">
           <p class="interiors-label">Панно в интерьере</p>
           <div class="interiors-grid">
-            <div class="interior-thumb active" data-src="assets/images/платок_91Х91_.jpg">
-              <img loading="lazy" src="assets/images/платок_91Х91_.jpg" alt="Панно">
+            <div class="interior-thumb active" data-src="assets/images/давид.jpg">
+              <img loading="lazy" src="assets/images/давид.jpg" alt="Панно">
             </div>
-            <div class="interior-thumb" data-src="assets/images/interiors/anna-pavlova-1.jpg">
-              <img loading="lazy" src="assets/images/interiors/anna-pavlova-1.jpg" alt="Интерьер 1">
+            <div class="interior-thumb" data-src="assets/images/interiors/david-1.jpg">
+              <img loading="lazy" src="assets/images/interiors/david-1.jpg" alt="Интерьер 1">
             </div>
-            <div class="interior-thumb" data-src="assets/images/interiors/anna-pavlova-2.jpg">
-              <img loading="lazy" src="assets/images/interiors/anna-pavlova-2.jpg" alt="Интерьер 2">
+            <div class="interior-thumb" data-src="assets/images/interiors/david-2.jpg">
+              <img loading="lazy" src="assets/images/interiors/david-2.jpg" alt="Интерьер 2">
             </div>
-            <div class="interior-thumb" data-src="assets/images/interiors/anna-pavlova-3.jpg">
-              <img loading="lazy" src="assets/images/interiors/anna-pavlova-3.jpg" alt="Интерьер 3">
+            <div class="interior-thumb" data-src="assets/images/interiors/david-3.jpg">
+              <img loading="lazy" src="assets/images/interiors/david-3.jpg" alt="Интерьер 3">
             </div>
-            <div class="interior-thumb" data-src="assets/images/interiors/anna-pavlova-4.jpg">
-              <img loading="lazy" src="assets/images/interiors/anna-pavlova-4.jpg" alt="Интерьер 4">
+            <div class="interior-thumb" data-src="assets/images/interiors/david-4.jpg">
+              <img loading="lazy" src="assets/images/interiors/david-4.jpg" alt="Интерьер 4">
             </div>
           </div>
         </div>
@@ -67,8 +67,8 @@
 
       <!-- ПРАВАЯ: информация -->
       <div class="panel-info">
-        <span class="panel-category">Шелковые панно · Коллекция «Алая лента»</span>
-        <h1 class="panel-title">Анна Павлова</h1>
+        <span class="panel-category">Шелковые панно · Музейная коллекция</span>
+        <h1 class="panel-title">Свидание с Давидом</h1>
 
         <div class="panel-divider"></div>
 
@@ -132,13 +132,10 @@
       <h2 class="related-title">Другие работы из коллекции</h2>
       <div class="related-grid">
         <a href="#" class="related-card">
-          <img loading="lazy" src="assets/images/alaya-lenta/1.jpg" alt="Панно 1">
+          <img loading="lazy" src="assets/images/давид/2.jpg" alt="Панно 2">
         </a>
         <a href="#" class="related-card">
-          <img loading="lazy" src="assets/images/alaya-lenta/2.jpg" alt="Панно 2">
-        </a>
-        <a href="#" class="related-card">
-          <img loading="lazy" src="assets/images/alaya-lenta/3.jpg" alt="Панно 3">
+          <img loading="lazy" src="assets/images/давид/3.jpg" alt="Панно 3">
         </a>
       </div>
     </section>
@@ -146,7 +143,6 @@
   </main>
 
   <script>
-    // Клик по интерьерной миниатюре — меняем главное фото
     document.querySelectorAll('.interior-thumb').forEach(thumb => {
       thumb.addEventListener('click', () => {
         const src = thumb.dataset.src;
