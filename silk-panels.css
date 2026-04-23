@@ -119,6 +119,15 @@
   aspect-ratio: 1 / 1;
 }
 
+/* Портретный формат (Свет тишины и др.) */
+.card-large.card-large--portrait {
+  aspect-ratio: unset;
+  width: 380px;
+}
+.small-grid.small-grid--portrait .panel-card {
+  aspect-ratio: 3 / 5;
+}
+
 /* Правая колонка */
 .collection-right {
   display: flex;
