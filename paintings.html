@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Картины — ARTFLYSTORY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="paintings.css?v=11">
+</head>
+<body>
+
+  <!-- НАВИГАЦИЯ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-frame">
+        <span class="logo-inner">АФ</span>
+      </div>
+      <span class="logo-text">ARTFLYSTORY</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">НА ГЛАВНУЮ</a></li>
+      <li><a href="about.html">О НАС</a></li>
+      <li><a href="gallery.html">ГАЛЛЕРЕЯ</a></li>
+      <li><a href="meetings.html">ВСТРЕЧИ</a></li>
+      <li><a href="contacts.html">КОНТАКТЫ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ЗАГОЛОВОК -->
+  <header class="paintings-page-header">
+    <h1 class="paintings-page-title">Картины для вашего интерьера</h1>
+    <span class="paintings-page-line"></span>
+  </header>
+
+  <!-- КАТЕГОРИИ -->
+  <main class="paintings-categories">
+
+    <!-- Текстильные работы -->
+    <a href="paintings-textile.html" class="pcat-card">
+      <span class="pcat-label">Текстильные работы</span>
+      <div class="pcat-img-wrap">
+        <img src="assets/images/картины/текстиль/основная.png" alt="Текстильные работы" class="pcat-img">
+      </div>
+    </a>
+
+    <!-- Художественные картины -->
+    <a href="paintings-oil.html" class="pcat-card">
+      <span class="pcat-label">Художественные Картины</span>
+      <div class="pcat-img-wrap">
+        <img src="assets/images/картины/масло/основная.jpg" alt="Художественные картины" class="pcat-img">
+      </div>
+    </a>
+
+  </main>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор витрины — ARTFLYSTORY</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d0d;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      color: #ccc;
+    }
+
+    /* ── ТУЛБАР ── */
+    #toolbar {
+      background: #1a1a1a;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    #toolbar h1 {
+      color: #c9a84c;
+      font-size: 13px;
+      letter-spacing: 3px;
+      margin-right: 8px;
+    }
+
+    .tb-sep {
+      width: 1px;
+      height: 24px;
+      background: #333;
+    }
+
+    .tb-label {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 1px;
+    }
+
+    .btn {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #ccc;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-family: monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:hover { background: #333; border-color: #555; color: #fff; }
+    .btn.active { background: #c9a84c22; border-color: #c9a84c; color: #c9a84c; }
+    .btn.primary { background: #c9a84c; border-color: #c9a84c; color: #000; font-weight: bold; }
+    .btn.primary:hover { background: #e4c97a; }
+    .btn:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── ОСНОВНАЯ ОБЛАСТЬ ── */
+    #main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── КАНВАС ── */
+    #canvas-wrap {
+      flex: 1;
+      overflow: auto;
+      padding: 32px;
+      background: #111;
+    }
+
+    #canvas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── ЭЛЕМЕНТ СЕТКИ ── */
+    .gi {
+      position: relative;
+      overflow: hidden;
+      cursor: grab;
+      border: 2px solid transparent;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: #1a1a1a;
+    }
+
+    .gi:hover { border-color: rgba(201,168,76,0.3); }
+    .gi.selected { border-color: #c9a84c; box-shadow: 0 0 0 1px #c9a84c44; }
+    .gi.dragging { opacity: 0.35; cursor: grabbing; }
+    .gi.drag-over { border-color: #c9a84c88; box-shadow: inset 0 0 0 3px #c9a84c44; }
+
+    .gi img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* colspan */
+    .gi[data-col="2"] { grid-column: span 2; }
+    .gi[data-col="3"] { grid-column: span 3; }
+    /* aspect-ratio выставляется инлайн через JS на основе реальных размеров картинки */
+
+    /* Бейдж с размером */
+    .gi-badge {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(0,0,0,0.75);
+      color: #c9a84c;
+      font-size: 10px;
+      padding: 2px 6px;
+      letter-spacing: 1px;
+      pointer-events: none;
+    }
+
+    /* Номер позиции */
+    .gi-num {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0,0,0,0.75);
+      color: #888;
+      font-size: 10px;
+      padding: 2px 6px;
+      pointer-events: none;
+    }
+
+    /* ── БОКОВАЯ ПАНЕЛЬ ── */
+    #sidebar {
+      width: 220px;
+      background: #161616;
+      border-left: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    #sidebar-title {
+      padding: 14px 16px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #555;
+      border-bottom: 1px solid #222;
+      flex-shrink: 0;
+    }
+
+    #image-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 10px;
+      overflow-y: auto;
+      max-height: 260px;
+      flex-shrink: 0;
+    }
+
+    .img-list-item {
+      cursor: pointer;
+      border: 1px solid #2a2a2a;
+      overflow: hidden;
+      aspect-ratio: 1;
+      transition: border-color 0.15s;
+    }
+
+    .img-list-item:hover { border-color: #c9a84c; }
+
+    .img-list-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    #sidebar-content {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    .side-section-title {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .side-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    #no-selection {
+      color: #444;
+      font-size: 11px;
+      letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    #selection-controls { display: none; }
+    #selection-controls.visible { display: block; }
+
+    .preview-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 1px solid #333;
+      margin-bottom: 12px;
+    }
+
+    /* ── OUTPUT ── */
+    #output-wrap {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    #output-wrap.open { display: flex; }
+
+    #output-box {
+      background: #1a1a1a;
+      border: 1px solid #c9a84c44;
+      width: 780px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    #output-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #output-header span {
+      color: #c9a84c;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    #output-code {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #aaa;
+      white-space: pre;
+      background: #111;
+    }
+
+    #output-footer {
+      padding: 12px 16px;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c9a84c;
+      color: #000;
+      padding: 8px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ТУЛБАР -->
+<div id="toolbar">
+  <h1>РЕДАКТОР ВИТРИНЫ</h1>
+  <div class="tb-sep"></div>
+  <button class="btn active" id="btn-textile" onclick="switchGallery('textile')">Текстиль</button>
+  <button class="btn" id="btn-oil" onclick="switchGallery('oil')">Масло</button>
+  <div class="tb-sep"></div>
+  <span class="tb-label">перетаскивай для перестановки · клик для выбора</span>
+  <div class="tb-sep"></div>
+  <button class="btn primary" onclick="openOutput()">Скопировать HTML →</button>
+</div>
+
+<!-- ОСНОВНАЯ ОБЛАСТЬ -->
+<div id="main">
+
+  <!-- КАНВАС -->
+  <div id="canvas-wrap">
+    <div id="canvas"></div>
+  </div>
+
+  <!-- БОКОВАЯ ПАНЕЛЬ -->
+  <div id="sidebar">
+
+    <!-- Список картин для добавления -->
+    <div id="sidebar-title">ДОБАВИТЬ КАРТИНУ</div>
+    <div id="image-list"></div>
+
+    <div style="height:1px;background:#2a2a2a;flex-shrink:0"></div>
+
+    <!-- Настройки выбранного элемента -->
+    <div id="sidebar-title2" style="padding:14px 16px;font-size:11px;letter-spacing:2px;color:#555;border-bottom:1px solid #222;flex-shrink:0">ВЫБРАННЫЙ ЭЛЕМЕНТ</div>
+    <div id="sidebar-content">
+
+      <div id="no-selection">
+        Кликни на картину чтобы изменить её размер
+      </div>
+
+      <div id="selection-controls">
+        <img id="preview-thumb" class="preview-thumb" src="" alt="">
+
+        <div>
+          <div class="side-section-title">КОЛОНКИ</div>
+          <div class="side-row">
+            <button class="btn" id="col1" onclick="setSpan('col',1)">1×</button>
+            <button class="btn" id="col2" onclick="setSpan('col',2)">2×</button>
+            <button class="btn" id="col3" onclick="setSpan('col',3)">3×</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-section-title">СТРОКИ</div>
+          <div class="side-row">
+            <button class="btn" id="row1" onclick="setSpan('row',1)">1 ряд</button>
+            <button class="btn" id="row2" onclick="setSpan('row',2)">2 ряда</button>
+          </div>
+        </div>
+
+        <button class="btn" style="margin-top:8px;color:#c0392b;border-color:#c0392b44" onclick="removeSelected()">✕ Удалить</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- OUTPUT МОДАЛКА -->
+<div id="output-wrap" onclick="closeOutputIfBg(event)">
+  <div id="output-box">
+    <div id="output-header">
+      <span>ГОТОВЫЙ КОД → вставь в paintings-textile.html</span>
+      <button class="btn" onclick="closeOutput()">✕</button>
+    </div>
+    <div id="output-code"></div>
+    <div id="output-footer">
+      <button class="btn primary" onclick="copyCode()">Скопировать</button>
+      <button class="btn" onclick="closeOutput()">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Скопировано!</div>
+
+<script>
+  const GALLERIES = {
+    textile: [
+      'assets/images/картины/текстиль/основная.png',
+      'assets/images/картины/текстиль/IMG_2560.png',
+      'assets/images/картины/текстиль/IMG_2561.png',
+      'assets/images/картины/текстиль/IMG_2562.png',
+      'assets/images/картины/текстиль/IMG_2632.png',
+      'assets/images/картины/текстиль/IMG_2633.png',
+      'assets/images/картины/текстиль/IMG_2651.JPG',
+      'assets/images/картины/текстиль/A60333CE-E358-4368-87BB-C7D159C2065A.JPG',
+    ],
+    oil: [
+      'assets/images/картины/масло/основная.jpg',
+      'assets/images/картины/масло/photo_5393475435188314202_y.jpg',
+      'assets/images/картины/масло/photo_5406617446703554618_y.jpg',
+      'assets/images/картины/масло/photo_5242205093594074375_y.jpg',
+      'assets/images/картины/масло/photo_5242205093594074428_y.jpg',
+      'assets/images/картины/масло/photo_5406617446703554676_y.jpg',
+      'assets/images/картины/масло/photo_5215635717231417761_y%20(1).jpg',
+      'assets/images/картины/масло/photo_5215635717231417801_y%20(1).jpg',
+      'assets/images/картины/масло/5445109033804620498.jpg',
+      'assets/images/картины/масло/5458365922810126515.jpg',
+      'assets/images/картины/масло/photo_5406617446703554642_y.jpg',
+      'assets/images/картины/масло/Slide16.JPG',
+      "assets/images/картины/масло/Let's%20do%20it%20_70х100.JPG",
+      'assets/images/картины/масло/DSCF5191%20(3).JPG',
+      'assets/images/картины/масло/IMG_0062.jpg',
+      'assets/images/картины/масло/IMG_3151.JPG',
+      'assets/images/картины/масло/IMG_3156.png',
+      'assets/images/картины/масло/IMG_3159.png',
+      'assets/images/картины/масло/IMG_3163.png',
+      'assets/images/картины/масло/IMG_4451.PNG',
+    ],
+  };
+
+  let currentGallery = 'textile';
+
+  function switchGallery(name) {
+    currentGallery = name;
+    document.getElementById('btn-textile').classList.toggle('active', name === 'textile');
+    document.getElementById('btn-oil').classList.toggle('active', name === 'oil');
+    selectedIdx = null;
+    loadRatios(GALLERIES[name]).then(ratios => {
+      items = GALLERIES[name].map((src, i) => ({ src, col: 1, row: 1, ratio: ratios[i] }));
+      render();
+      updateSidebar();
+      renderImageList();
+    });
+  }
+
+  // Загружаем реальные пропорции каждой картинки
+  function loadRatios(srcs) {
+    return Promise.all(srcs.map(src => new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve(img.naturalWidth / img.naturalHeight);
+      img.onerror = () => resolve(3/4);
+      img.src = src;
+    })));
+  }
+
+  // Состояние: массив объектов { src, col, row, ratio }
+  let items = [];
+  let selectedIdx = null;
+  let dragSrcIdx = null;
+
+  const canvas = document.getElementById('canvas');
+
+  function renderImageList() {
+    const list = document.getElementById('image-list');
+    list.innerHTML = '';
+    GALLERIES[currentGallery].forEach(src => {
+      const wrap = document.createElement('div');
+      wrap.className = 'img-list-item';
+      wrap.title = 'Добавить в сетку';
+      const img = document.createElement('img');
+      img.src = src;
+      wrap.appendChild(img);
+      wrap.addEventListener('click', () => addImage(src));
+      list.appendChild(wrap);
+    });
+  }
+
+  function addImage(src) {
+    const ratio = items.find(i => i.src === src)?.ratio || 3/4;
+    // Загружаем ratio если неизвестен
+    const known = items.find(i => i.src === src);
+    if (known) {
+      items.push({ src, col: 1, row: 1, ratio: known.ratio });
+      render();
+    } else {
+      const img = new Image();
+      img.onload = () => {
+        items.push({ src, col: 1, row: 1, ratio: img.naturalWidth / img.naturalHeight });
+        render();
+      };
+      img.onerror = () => { items.push({ src, col: 1, row: 1, ratio: 3/4 }); render(); };
+      img.src = src;
+    }
+  }
+
+  function removeSelected() {
+    if (selectedIdx === null) return;
+    items.splice(selectedIdx, 1);
+    selectedIdx = null;
+    render();
+    updateSidebar();
+  }
+
+  function render() {
+    canvas.innerHTML = '';
+    items.forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'gi' + (selectedIdx === i ? ' selected' : '');
+      el.dataset.col = item.col;
+      el.dataset.row = item.row;
+      el.draggable = true;
+      el.style.aspectRatio = item.ratio;
+
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = '';
+
+      const badge = document.createElement('div');
+      badge.className = 'gi-badge';
+      badge.textContent = item.col + '×' + item.row;
+
+      const num = document.createElement('div');
+      num.className = 'gi-num';
+      num.textContent = i + 1;
+
+      el.appendChild(img);
+      el.appendChild(badge);
+      el.appendChild(num);
+
+      // click
+      el.addEventListener('click', () => selectItem(i));
+
+      // drag
+      el.addEventListener('dragstart', e => {
+        dragSrcIdx = i;
+        setTimeout(() => el.classList.add('dragging'), 0);
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+        document.querySelectorAll('.gi').forEach(g => g.classList.remove('drag-over'));
+      });
+      el.addEventListener('dragover', e => {
+        e.preventDefault();
+        if (dragSrcIdx !== i) el.classList.add('drag-over');
+      });
+      el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('drag-over');
+        if (dragSrcIdx !== null && dragSrcIdx !== i) {
+          const moved = items.splice(dragSrcIdx, 1)[0];
+          items.splice(i, 0, moved);
+          if (selectedIdx === dragSrcIdx) selectedIdx = i;
+          else if (selectedIdx !== null) {
+            if (dragSrcIdx < selectedIdx && i >= selectedIdx) selectedIdx--;
+            else if (dragSrcIdx > selectedIdx && i <= selectedIdx) selectedIdx++;
+          }
+          dragSrcIdx = null;
+          render();
+          updateSidebar();
+        }
+      });
+
+      canvas.appendChild(el);
+    });
+  }
+
+  function selectItem(i) {
+    selectedIdx = (selectedIdx === i) ? null : i;
+    render();
+    updateSidebar();
+  }
+
+  function updateSidebar() {
+    const noSel = document.getElementById('no-selection');
+    const sel = document.getElementById('selection-controls');
+    if (selectedIdx === null) {
+      noSel.style.display = '';
+      sel.classList.remove('visible');
+      return;
+    }
+    noSel.style.display = 'none';
+    sel.classList.add('visible');
+
+    const item = items[selectedIdx];
+    document.getElementById('preview-thumb').src = item.src;
+
+    [1,2,3].forEach(n => {
+      document.getElementById('col'+n).classList.toggle('active', item.col === n);
+    });
+    [1,2].forEach(n => {
+      document.getElementById('row'+n).classList.toggle('active', item.row === n);
+    });
+
+    // Блокируем 2×/3× если текущий ряд 2 и суммарно выйдет за 3 колонки
+    // (упрощённо — всегда доступны)
+  }
+
+  function setSpan(type, val) {
+    if (selectedIdx === null) return;
+    if (type === 'col') items[selectedIdx].col = val;
+    if (type === 'row') items[selectedIdx].row = val;
+    render();
+    updateSidebar();
+  }
+
+  // ── ГЕНЕРАЦИЯ HTML ──
+  function generateHTML() {
+    const lines = ['<div class="tgallery-grid">'];
+    items.forEach((item, i) => {
+      const delay = (i % 3 === 0) ? '' : ` data-delay="${i % 3}"`;
+      const colStyle = item.col > 1 ? ` style="grid-column:span ${item.col}${item.row > 1 ? ';grid-row:span '+item.row : ''}"` : (item.row > 1 ? ` style="grid-row:span ${item.row}"` : '');
+      lines.push('');
+      lines.push(`  <div class="tgallery-item fade-up"${delay ? delay : ''}${colStyle}>`);
+      lines.push(`    <div class="tgallery-img-wrap">`);
+      lines.push(`      <img src="${item.src}" alt="Текстильная работа" class="tgallery-img">`);
+      lines.push(`    </div>`);
+      lines.push(`  </div>`);
+    });
+    lines.push('');
+    lines.push('</div>');
+    return lines.join('\n');
+  }
+
+  function openOutput() {
+    document.getElementById('output-code').textContent = generateHTML();
+    document.getElementById('output-wrap').classList.add('open');
+  }
+
+  function closeOutput() {
+    document.getElementById('output-wrap').classList.remove('open');
+  }
+
+  function closeOutputIfBg(e) {
+    if (e.target === document.getElementById('output-wrap')) closeOutput();
+  }
+
+  function copyCode() {
+    const code = document.getElementById('output-code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    });
+  }
+
+  // Клик вне карточки снимает выделение
+  document.getElementById('canvas-wrap').addEventListener('click', e => {
+    if (e.target === document.getElementById('canvas-wrap') || e.target === canvas) {
+      selectedIdx = null;
+      render();
+      updateSidebar();
+    }
+  });
+
+  // Инициализация
+  switchGallery('textile');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+/* === PAINTINGS PAGES === */
+
+/* --- Общий заголовок (переиспользуем из silk-panels) --- */
+.page-header {
+  padding: 120px 64px 60px;
+  text-align: center;
+  position: relative;
+}
+
+.page-header-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.page-header-line {
+  display: block;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+/* --- Кнопка «назад» --- */
+.gallery-back {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-bottom: 24px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.gallery-back:hover { opacity: 1; }
+
+/* ============================================
+   ГЛАВНАЯ СТРАНИЦА — paintings.html
+   ============================================ */
+
+.paintings-page-header {
+  padding: 110px 64px 40px;
+}
+
+.paintings-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: var(--white-dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.paintings-page-line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(201, 168, 76, 0.5), transparent);
+  margin-top: 4px;
+}
+
+.paintings-categories {
+  display: flex;
+  gap: 40px;
+  padding: 0 64px 80px;
+  align-items: flex-start;
+}
+
+/* --- Карточка категории --- */
+.pcat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pcat-card:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pcat-label {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.6vw, 22px);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: var(--white-dim);
+  text-transform: uppercase;
+  text-align: center;
+  transition: color 0.3s;
+}
+
+.pcat-card:hover .pcat-label,
+.pcat-card:focus .pcat-label {
+  color: var(--gold);
+}
+
+.pcat-card:visited .pcat-label {
+  color: var(--white-dim);
+}
+
+.pcat-img-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  transition: border-color 0.3s;
+}
+
+.pcat-card:hover .pcat-img-wrap {
+  border-color: rgba(201, 168, 76, 0.5);
+}
+
+.pcat-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.pcat-card:hover .pcat-img {
+  transform: scale(1.03);
+}
+
+/* Плейсхолдер для ещё не готовой категории */
+.pcat-img-placeholder {
+  aspect-ratio: 3/4;
+  background: rgba(201, 168, 76, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pcat-placeholder-text {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+}
+
+/* ============================================
+   ВИТРИНА — paintings-textile.html
+   ============================================ */
+
+.textile-gallery {
+  padding: 0 64px 80px;
+}
+
+.tgallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tgallery-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.tgallery-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tgallery-item[data-delay="1"] { transition-delay: 0.1s; }
+.tgallery-item[data-delay="2"] { transition-delay: 0.2s; }
+
+.tgallery-img-wrap {
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  transition: border-color 0.3s;
+}
+
+.tgallery-img-wrap:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+}
+
+.tgallery-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.tgallery-img-wrap:hover .tgallery-img {
+  transform: scale(1.04);
+}
+
+.tgallery-info {
+  padding: 14px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tgallery-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.tgallery-desc {
+  font-size: 12px;
+  color: var(--white-dim);
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.tgallery-price {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* fade-up для заголовка */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

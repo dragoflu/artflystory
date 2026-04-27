@@ -206,7 +206,7 @@
         </div>
         <div>
           <p class="contact-label">ТЕЛЕФОН</p>
-          <p class="contact-value"><a href="tel:+79999999999">+7 (999) 999-99-99</a></p>
+          <p class="contact-value"><a href="tel:+79163950468">+7 916 395 04 68</a></p>
         </div>
       </div>
 
@@ -231,39 +231,81 @@
       <h2 class="form-heading">Напишите нам</h2>
       <p class="form-subheading">Ответим в течение одного рабочего дня</p>
 
-      <form>
-        <div class="form-row">
-          <div class="form-group">
-            <label>ИМЯ</label>
-            <input type="text">
-          </div>
-          <div class="form-group">
-            <label>ТЕЛЕФОН</label>
-            <input type="tel">
-          </div>
+      <form id="contacts-form">
+        <div class="form-group">
+          <label>Имя</label>
+          <input type="text" id="form-name" placeholder="">
         </div>
         <div class="form-group">
-          <label>EMAIL</label>
-          <input type="email">
+          <label>E-mail</label>
+          <input type="email" id="form-email" placeholder="">
         </div>
         <div class="form-group">
-          <label>ТИП ЗАПРОСА</label>
-          <select>
-            <option value="">Выберите...</option>
-            <option>Покупка работы</option>
-            <option>Индивидуальный заказ</option>
-            <option>Сотрудничество</option>
-            <option>Другое</option>
-          </select>
+          <label>Сообщение</label>
+          <textarea id="form-message" rows="4"></textarea>
         </div>
-        <div class="form-group">
-          <label>СООБЩЕНИЕ</label>
-          <textarea rows="4"></textarea>
-        </div>
-        <button type="submit" class="btn btn-gold btn-full">ОТПРАВИТЬ</button>
+        <button type="submit" class="btn btn-gold btn-full" id="contacts-btn">ОТПРАВИТЬ</button>
+        <p id="contacts-status" style="margin-top:12px;font-size:13px;letter-spacing:1px;text-align:center;display:none"></p>
       </form>
     </div>
 
   </main>
+
+<script>
+  const WEBHOOK_URL = 'https://n8n-production-a23c.up.railway.app/webhook/contact-form';
+
+  let lastSubmit = 0;
+
+  document.getElementById('contacts-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('contacts-btn');
+    const status = document.getElementById('contacts-status');
+    const name = document.getElementById('form-name').value.trim();
+    const email = document.getElementById('form-email').value.trim();
+    const message = document.getElementById('form-message').value.trim();
+
+    status.style.display = 'block';
+
+    if (!name || !email || !message) {
+      status.style.color = '#e07070';
+      status.textContent = 'Пожалуйста, заполните все поля.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status.style.color = '#e07070';
+      status.textContent = 'Введите корректный e-mail.';
+      return;
+    }
+    if (Date.now() - lastSubmit < 60000) {
+      status.style.color = '#e07070';
+      status.textContent = 'Подождите минуту перед повторной отправкой.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'ОТПРАВКА...';
+    status.style.display = 'none';
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      lastSubmit = Date.now();
+      status.style.color = '#c9a84c';
+      status.textContent = 'Сообщение отправлено. Мы свяжемся с вами.';
+      this.reset();
+    } catch (err) {
+      status.style.color = '#e07070';
+      status.textContent = 'Ошибка отправки. Попробуйте позже.';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'ОТПРАВИТЬ';
+    status.style.display = 'block';
+  });
+</script>
+
 </body>
 </html>

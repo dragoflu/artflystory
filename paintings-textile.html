@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Текстильные работы — ARTFLYSTORY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="paintings.css?v=4">
+</head>
+<body>
+
+  <!-- НАВИГАЦИЯ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-frame">
+        <span class="logo-inner">АФ</span>
+      </div>
+      <span class="logo-text">ARTFLYSTORY</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">НА ГЛАВНУЮ</a></li>
+      <li><a href="about.html">О НАС</a></li>
+      <li><a href="gallery.html">ГАЛЛЕРЕЯ</a></li>
+      <li><a href="meetings.html">ВСТРЕЧИ</a></li>
+      <li><a href="contacts.html">КОНТАКТЫ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ЗАГОЛОВОК -->
+  <header class="page-header fade-up">
+    <a href="paintings.html" class="gallery-back">← Картины для интерьера</a>
+    <h1 class="page-header-title">Текстильные работы</h1>
+    <span class="page-header-line"></span>
+  </header>
+
+  <!-- ВИТРИНА -->
+  <main class="textile-gallery">
+
+    <div class="tgallery-grid">
+
+  <div class="tgallery-item fade-up" style="grid-column:span 2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/основная.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" data-delay="1">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/A60333CE-E358-4368-87BB-C7D159C2065A.JPG" alt="Текстильная работа" class="tgallery-img">
+    </div>
+    <div class="tgallery-info">
+      <h3 class="tgallery-title">«Дар цветения»</h3>
+      <p class="tgallery-desc">60×50 · Картина в частной коллекции</p>
+      <p class="tgallery-desc">Под заказ</p>
+      <p class="tgallery-price">125 000 ₽</p>
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" data-delay="2" style="grid-column:span 2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2561.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2562.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+    <div class="tgallery-info">
+      <h3 class="tgallery-title">«Миг тишины»</h3>
+      <p class="tgallery-desc">90×80, холст, шёлк, бархат, бусины, пайетки</p>
+      <p class="tgallery-price">240 000 ₽</p>
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" data-delay="1" style="grid-column:span 2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2633.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" data-delay="2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2632.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+    <div class="tgallery-info">
+      <h3 class="tgallery-title">«Тайна зелёного покрова»</h3>
+      <p class="tgallery-desc">90×80, холст, шёлк, бархат, бусины, пайетки</p>
+      <p class="tgallery-price">240 000 ₽</p>
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" style="grid-column:span 2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2560.png" alt="Текстильная работа" class="tgallery-img">
+    </div>
+  </div>
+
+  <div class="tgallery-item fade-up" data-delay="1" style="grid-column:span 3;grid-row:span 2">
+    <div class="tgallery-img-wrap">
+      <img src="assets/images/картины/текстиль/IMG_2651.JPG" alt="Текстильная работа" class="tgallery-img">
+    </div>
+  </div>
+
+    </div>
+
+  </main>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
