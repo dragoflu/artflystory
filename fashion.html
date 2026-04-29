@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Шелковые платки — ARTFLYSTORY</title>
+  <title>Дизайнерская одежда — ARTFLYSTORY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -13,36 +13,28 @@
     .collection-right { justify-content: flex-start; }
     .collection-right .small-grid { margin-top: 0; }
 
-    /* Карточки с описанием: flex-колонка, без aspect-ratio */
     .small-grid .panel-card {
       overflow: visible;
       aspect-ratio: unset;
       display: flex;
       flex-direction: column;
+      background: transparent;
+      border: none;
     }
     .small-grid .panel-card .panel-img-wrap {
       position: relative;
       width: 100%;
-      height: auto;
-      aspect-ratio: 1 / 1;
       overflow: hidden;
-      flex-shrink: 0;
     }
     .small-grid .panel-card .panel-img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    .panel-card .tgallery-info { padding: 10px 6px 6px; display: flex; flex-direction: column; gap: 4px; }
-    .panel-card .tgallery-title { font-family: var(--font-display); font-size: 12px; font-weight: 400; color: var(--white); letter-spacing: 0.5px; line-height: 1.3; }
-    .panel-card .tgallery-desc { font-size: 11px; color: var(--white-dim); letter-spacing: 0.3px; line-height: 1.4; }
-    .panel-card .tgallery-price { font-family: var(--font-display); font-size: 12px; color: var(--gold); letter-spacing: 0.5px; }
-
-    .collection-desc p { font-size: 22px; margin-bottom: 6px; line-height: 1.4; }
-    .collection-desc p:first-child { color: var(--white); font-family: var(--font-display); }
+    .collection-desc { margin-top: 20px; }
+    .collection-desc p { font-size: 18px; margin-bottom: 6px; line-height: 1.5; color: var(--white-dim); }
+    .collection-desc p:first-child { color: var(--white); font-family: var(--font-display); font-size: 20px; }
     .collection-desc p:last-child { color: var(--gold); font-family: var(--font-display); }
   </style>
 </head>
@@ -68,7 +60,7 @@
 
   <!-- ЗАГОЛОВОК СТРАНИЦЫ -->
   <header class="page-header fade-up">
-    <h1 class="page-header-title">Шелковые платки</h1>
+    <h1 class="page-header-title">Дизайнерская одежда и аксессуары</h1>
     <span class="page-header-line"></span>
   </header>
 
@@ -76,49 +68,54 @@
   <main class="collections">
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- КОЛЛЕКЦИЯ «ДАВИД»                       -->
+    <!-- ДАР ЦВЕТНИКА                            -->
     <!-- ═══════════════════════════════════════ -->
     <section class="collection">
 
       <div class="collection-header fade-up">
-        <h2 class="collection-name">«Свидание с Давидом»</h2>
+        <h2 class="collection-name">«Дар цветения»</h2>
       </div>
 
       <div class="collection-grid fade-up" data-delay="1">
 
-        <a href="#" class="panel-card card-large" aria-label="Давид">
+        <a href="#" class="panel-card card-large" aria-label="Дар цветения">
           <div class="panel-img-wrap">
             <img
-              src="assets/images/шелковые%20платки/основная%20давид.webp"
-              alt="Давид"
+              src="assets/images/дизайнерская%20одежда/дар%20цветника%202.webp"
+              alt="Дар цветения"
               class="panel-img" loading="lazy"
             >
           </div>
-          <span class="panel-caption">Свидание с Давидом</span>
         </a>
 
         <div class="collection-right">
-
           <div class="small-grid small-grid--3">
 
-            <a href="#" class="panel-card" aria-label="Давид">
+            <a href="#" class="panel-card" aria-label="Дар цветения 2">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/давид.webp" alt="Давид" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/Дар%20цветника%20основная.webp" alt="Дар цветения основная" class="panel-img" loading="lazy">
               </div>
             </a>
 
-            <a href="#" class="panel-card" aria-label="Давид 1">
+            <a href="#" class="panel-card" aria-label="Дар цветения 1">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/давид1.webp" alt="Давид 1" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/дар%20цветника1.webp" alt="Дар цветения 1" class="panel-img" loading="lazy">
               </div>
             </a>
+
+            <a href="#" class="panel-card" aria-label="Дар цветения 3">
+              <div class="panel-img-wrap">
+                <img src="assets/images/дизайнерская%20одежда/дар%20цветника3.webp" alt="Дар цветения 3" class="panel-img" loading="lazy">
+              </div>
+            </a>
+
 
           </div>
 
           <div class="collection-desc">
-            <p>«Свидание с Давидом»</p>
-            <p>Натуральный шёлк</p>
-            <p>Размер: 140×140 — 25 000 ₽</p>
+            <p>Эксклюзивное шитьё</p>
+            <p>Бархат, хлопок, шёлк, нитки, пайетки, бисер</p>
+            <p>Выполняется по индивидуальному заказу. Цена по запросу клиента.</p>
           </div>
         </div>
 
@@ -130,55 +127,41 @@
     </div>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- КОЛЛЕКЦИЯ «ЯГУАР»                       -->
+    <!-- ТАЙНА ЗЕЛЁНОГО ПОКРОВА                  -->
     <!-- ═══════════════════════════════════════ -->
     <section class="collection">
 
       <div class="collection-header fade-up">
-        <h2 class="collection-name">«Весна. Леопардовый принт»</h2>
+        <h2 class="collection-name">«Тайна зелёного покрова»</h2>
       </div>
 
       <div class="collection-grid fade-up" data-delay="1">
 
-        <a href="#" class="panel-card card-large" aria-label="Ягуар">
+        <a href="#" class="panel-card card-large" aria-label="Тайна зелёного покрова">
           <div class="panel-img-wrap">
             <img
-              src="assets/images/шелковые%20платки/ягуар%20основная.webp"
-              alt="Ягуар"
+              src="assets/images/дизайнерская%20одежда/Тайна%20зеленого%20покрова.webp"
+              alt="Тайна зелёного покрова"
               class="panel-img" loading="lazy"
             >
           </div>
-          <span class="panel-caption">Ягуар</span>
         </a>
 
         <div class="collection-right">
-
           <div class="small-grid small-grid--3">
-
-            <a href="#" class="panel-card" aria-label="Ягуар">
+            <a href="#" class="panel-card" style="grid-row: span 2;" aria-label="Тайна зелёного покрова 1">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/ягуар.webp" alt="Ягуар" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/тайна%20зеленого%20покрова%20основная.webp" alt="Тайна зелёного покрова основная" class="panel-img" loading="lazy">
               </div>
             </a>
-
-            <a href="#" class="panel-card" aria-label="Ягуар 1">
-              <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/ягуар1.webp" alt="Ягуар 1" class="panel-img" loading="lazy">
-              </div>
-            </a>
-
-            <a href="#" class="panel-card" aria-label="Ягуар 2">
-              <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/ягуар2.webp" alt="Ягуар 2" class="panel-img" loading="lazy">
-              </div>
-            </a>
-
+            <div></div>
+            <div></div>
           </div>
 
           <div class="collection-desc">
-            <p>«Весна. Леопардовый принт»</p>
-            <p>Натуральный шёлк</p>
-            <p>Размер: 90×90 — 12 500 ₽ &nbsp;|&nbsp; 140×140 — 18 000 ₽</p>
+            <p>Эксклюзивное шитьё</p>
+            <p>Бархат, хлопок, шёлк, нитки, пайетки, бисер</p>
+            <p>Выполняется по индивидуальному заказу. Цена по запросу клиента.</p>
           </div>
         </div>
 
@@ -190,43 +173,48 @@
     </div>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- КОЛЛЕКЦИЯ «ДРАКОН»                      -->
+    <!-- ФЛОРА                                   -->
     <!-- ═══════════════════════════════════════ -->
     <section class="collection">
 
       <div class="collection-header fade-up">
-        <h2 class="collection-name">«Цветок лазурного дракона»</h2>
+        <h2 class="collection-name">«Флора»</h2>
       </div>
 
       <div class="collection-grid fade-up" data-delay="1">
 
-        <a href="#" class="panel-card card-large" aria-label="Дракон">
+        <a href="#" class="panel-card card-large" aria-label="Флора">
           <div class="panel-img-wrap">
             <img
-              src="assets/images/шелковые%20платки/основная%20дракон.webp"
-              alt="Дракон"
+              src="assets/images/дизайнерская%20одежда/флора1.webp"
+              alt="Флора"
               class="panel-img" loading="lazy"
             >
           </div>
-          <span class="panel-caption">Дракон</span>
         </a>
 
         <div class="collection-right">
-
           <div class="small-grid small-grid--3">
 
-            <a href="#" class="panel-card" aria-label="Дракон">
+            <a href="#" class="panel-card" aria-label="Флора 1">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/дракон.webp" alt="Дракон" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/Флора%20основная.webp" alt="Флора основная" class="panel-img" loading="lazy">
               </div>
             </a>
+
+            <a href="#" class="panel-card" aria-label="Флора 2">
+              <div class="panel-img-wrap">
+                <img src="assets/images/дизайнерская%20одежда/флора2.webp" alt="Флора 2" class="panel-img" loading="lazy">
+              </div>
+            </a>
+
 
           </div>
 
           <div class="collection-desc">
-            <p>«Цветок лазурного дракона»</p>
-            <p>Натуральный шёлк</p>
-            <p>Размер: 90×90 — 12 500 ₽ &nbsp;|&nbsp; 140×140 — 18 000 ₽</p>
+            <p>Эксклюзивное шитьё</p>
+            <p>Бархат, хлопок, шёлк, нитки, пайетки, бисер</p>
+            <p>Выполняется по индивидуальному заказу. Цена по запросу клиента.</p>
           </div>
         </div>
 
@@ -238,49 +226,54 @@
     </div>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- КОЛЛЕКЦИЯ «МАРМЕЛАДКИ»                  -->
+    <!-- АЛЁНКА                                  -->
     <!-- ═══════════════════════════════════════ -->
     <section class="collection">
 
       <div class="collection-header fade-up">
-        <h2 class="collection-name">«Не сахар»</h2>
+        <h2 class="collection-name">«Алёнка»</h2>
       </div>
 
       <div class="collection-grid fade-up" data-delay="1">
 
-        <a href="#" class="panel-card card-large" aria-label="Мармеладки">
+        <a href="#" class="panel-card card-large" aria-label="Алёнка">
           <div class="panel-img-wrap">
             <img
-              src="assets/images/шелковые%20платки/мармеладки%20основная.webp"
-              alt="Мармеладки"
+              src="assets/images/дизайнерская%20одежда/аленка3.webp"
+              alt="Алёнка"
               class="panel-img" loading="lazy"
             >
           </div>
-          <span class="panel-caption">Мармеладки</span>
         </a>
 
         <div class="collection-right">
-
           <div class="small-grid small-grid--3">
 
-            <a href="#" class="panel-card" aria-label="Мармеладки 1">
+            <a href="#" class="panel-card" aria-label="Алёнка 3">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/мармеладки%202.webp" alt="Мармеладки 1" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/Аленка%20основная.webp" alt="Алёнка основная" class="panel-img" loading="lazy">
               </div>
             </a>
 
-            <a href="#" class="panel-card" aria-label="Мармеладки">
+            <a href="#" class="panel-card" aria-label="Алёнка 1">
               <div class="panel-img-wrap">
-                <img src="assets/images/шелковые%20платки/мармеладки%203.webp" alt="Мармеладки" class="panel-img" loading="lazy">
+                <img src="assets/images/дизайнерская%20одежда/аленка1.webp" alt="Алёнка 1" class="panel-img" loading="lazy">
               </div>
             </a>
+
+            <a href="#" class="panel-card" aria-label="Алёнка 2">
+              <div class="panel-img-wrap">
+                <img src="assets/images/дизайнерская%20одежда/аленка2.webp" alt="Алёнка 2" class="panel-img" loading="lazy">
+              </div>
+            </a>
+
 
           </div>
 
           <div class="collection-desc">
-            <p>«Не сахар»</p>
-            <p>Натуральный шёлк</p>
-            <p>Размер: 90×90 — 12 500 ₽ &nbsp;|&nbsp; 140×140 — 18 000 ₽</p>
+            <p>Эксклюзивное шитьё</p>
+            <p>Бархат, хлопок, шёлк, нитки, пайетки, бисер</p>
+            <p>Выполняется по индивидуальному заказу. Цена по запросу клиента.</p>
           </div>
         </div>
 

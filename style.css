@@ -112,7 +112,7 @@ body:not(.page-home)::after {
 
 .nav-links a {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 3px;
   color: var(--white-dim);
   text-decoration: none;
@@ -264,7 +264,7 @@ body:not(.page-home)::after {
 .btn {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 3px;
   padding: 14px 32px;
   text-decoration: none;
@@ -335,7 +335,7 @@ body:not(.page-home)::after {
 .form-group label {
   display: block;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 2px;
   color: var(--white-dim);
   margin-bottom: 6px;
@@ -410,3 +410,28 @@ body:not(.page-home)::after {
 .art-circle:nth-child(3) { animation: fadeUp 1s ease 0.3s both; }
 .art-circle:nth-child(4) { animation: fadeUp 1s ease 0.4s both; }
 .art-circle:nth-child(5) { animation: fadeUp 1s ease 0.5s both; }
+
+/* === СНОСКА-ЗАКАЗ === */
+.order-note {
+  padding-top: 72px;
+  text-align: right;
+  padding: 72px 48px 10px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.order-note p {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--white-dim);
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.order-note a {
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.order-note a:hover { text-decoration: underline; }
