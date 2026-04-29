@@ -340,7 +340,7 @@
       </div>
 
       <div id="selection-controls">
-        <img id="preview-thumb" class="preview-thumb" src="" alt="">
+        <img id="preview-thumb" class="preview-thumb" src="" alt="" loading="lazy">
 
         <div>
           <div class="side-section-title">КОЛОНКИ</div>
@@ -605,7 +605,7 @@
       lines.push('');
       lines.push(`  <div class="tgallery-item fade-up"${delay ? delay : ''}${colStyle}>`);
       lines.push(`    <div class="tgallery-img-wrap">`);
-      lines.push(`      <img src="${item.src}" alt="Текстильная работа" class="tgallery-img">`);
+      lines.push(`      <img src="${item.src}" alt="Текстильная работа" class="tgallery-img" loading="lazy">`);
       lines.push(`    </div>`);
       lines.push(`  </div>`);
     });

@@ -631,7 +631,7 @@ function resetAll() {
 // ═══════════════════════════════════════
 function showCode() {
   const lines = state.map(el =>
-    `<!-- ${el.label} -->\n<img class="comp-img" src="${el.src}" alt="${el.label}" style="width:${el.w}px; left:${el.x}px; top:${el.y}px;">`
+    `<!-- ${el.label} -->\n<img class="comp-img" src="${el.src}" alt="${el.label}" style="width:${el.w}px; left:${el.x}px; top:${el.y}px;" loading="lazy">`
   );
   document.getElementById('code-output').textContent = lines.join('\n\n');
   document.getElementById('code-modal').classList.add('open');

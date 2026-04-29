@@ -34,7 +34,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("assets/images/bg-texture.jpg");
+  background-image: url("assets/images/bg-texture.webp");
   background-size: cover;
   background-position: center;
   z-index: -2;
